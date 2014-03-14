@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../topcoat/topcoat-desktop-dark.css" type="text/css">
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen">
+    <script type="text/javascript" src="../global.js"></script>
+</head>
+
+<body>
+    <div id="playground-switch">
+      <select class="topcoat-select" id="selectPlayground" onchange="changeFunc();">
+        <option value="../index.html">Classic</option>
+        <option value="../m/index.html">M</option>
+        <option selected value="../wizard/index.html">Help</option>
+      </select>
+    </div>
+
+    <a id="btn-help" class="icomatic" href="#">question</a>
+
+
+    <div id="overlay" class="on">
+
+        <div id="step-one" class="guide-block">
+            <h3>Welcome to After Effects</h3>
+            <p>Would you like to take a moment to learn some basics?</p>
+            <a onclick="killGuide();" href="#" class="topcoat-button--large larger">No</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="btn-start" href="#" class="topcoat-button--large larger">Yes, teach me!</a>
+            <br><br><br>
+            <label class="topcoat-checkbox"><input checked type="checkbox"><div class="topcoat-checkbox__checkmark"></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Don't show me this again</label>
+        </div>
+
+        <div id="step-two" class="guide-block off">
+            <h3>Things you should know</h3>
+            <ul>
+                <li><a id="show-tools" href="#">Where are my tools?</a></li>
+                <li><a href="#">How to use the timeline</a></li>
+                <li><a href="#">How to add effects</a></li>
+          </ul>
+            <a id="btn-cancel" href="#" class="topcoat-button--large larger">Close help</a>
+        </div>
+
+        <div id="howto-tools" class="coachmark off">
+            <h3>This is your toolbar&hellip;</h3>
+            <p>This is where you access various tools for creating objects and manipulating them</p>
+            <p><a href="#">Tell me more about my tools...</a></p>
+            <a onclick="stepTwo();" href="#" class="topcoat-button--large">Ok</a>
+        </div>
+    </div>
+
+    <!-- Don't worry about anything under this comment !-->
+    <script type="text/javascript" src="commands.js"></script>
+
+    <script type="text/javascript">
+
+        Commands.setClassic(true);
+        output = function(result) {
+            delete result.XMPMetadataAsUTF8
+
+            var resultStr =JSON.stringify(result, null, '\t');
+            PS.log(resultStr);
+
+        }
+
+        ask = function (elt) {
+            try {
+                Commands.ask('{'+elt.innerHTML+'}');
+            } catch (e) {
+                PS.log(e + "")
+            }
+        }
+
+        askClass = function (elt) {
+            try {
+                var className = elt.innerHTML;
+                PS.log(className);
+
+                var result = PS.simpleGet(className)
+
+                output(result);
+            } catch (e) {
+                PS.log(e + "")
+            }
+        }
+    </script>
+
+    <script type="text/javascript" src="trigger.js"></script>
+
+</body>
+</html>
