@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="../global.css" type="text/css" media="screen">
     <link rel="stylesheet" href="style.css" type="text/css" media="screen">
 
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="commands.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>   
     <script type="text/javascript" src="../global.js"></script>
     <script type="text/javascript" src="main.js"></script>
     </head>
@@ -20,6 +20,13 @@
     <option selected value="../m/index.html">M</option>
     <option value="../wizard/index.html">Help</option>
   </select>
+  <script>
+  var timeOut = null;
+  window.onresize = function(){
+     if(timeOut != null) clearTimeout(timeOut);
+     timeOut = setTimeout(Commands.displayLayersFromComp(), 100);
+  }
+  </script>
 
 
 <!-- Panel !-->
@@ -68,9 +75,9 @@
       </div>
       <div class="timeline-animation-marker" id="ticks">
 
-        <div class="marker-time">00:01</div>
+        <div id="marker-time">00:01</div>
 
-        <input type='range' class="topcoat-range-input" id='frameSeek' value="0" onchange="AE.activeItem.frame=this.value" min="0" max="1024"/>
+        <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition()"/>
 
         <div class="timeline-marker">
 
@@ -88,7 +95,7 @@
       <div class="timeline-title">
         Object A
       </div>
-      <div class="timeline-animation">
+      <div class="timeline-animation" id="timeline-animation-width">
         <div class="timeline-animation-element"></div>
         <div class="icon-keyframe" ></div>
         <div class="icon-keyframe" ></div>
@@ -96,58 +103,6 @@
       <div class="timeline-scrollspace">
       </div>
     </div>
-
-    <div class="timeline-object" id="t-ObjectB">
-      <div class="timeline-title">
-        Object B
-      </div>
-      <div class="timeline-animation">
-        <div class="timeline-animation-element"></div>
-        <div class="icon-keyframe"></div>
-        <div class="icon-keyframe"></div>
-      </div>
-      <div class="timeline-scrollspace">
-      </div>
-     </div>
-
-     <div class="timeline-object" id="t-ObjectC">
-      <div class="timeline-title">
-        Object C
-      </div>
-      <div class="timeline-animation">
-        <div class="timeline-animation-element"></div>
-        <div class="icon-keyframe"></div>
-        <div class="icon-keyframe"></div>
-      </div>
-      <div class="timeline-scrollspace">
-      </div>
-     </div>
-
-     <div class="timeline-object selected" id="t-ObjectD">
-      <div class="timeline-title">
-        Object D
-      </div>
-      <div class="timeline-animation">
-        <div class="timeline-animation-element"></div>
-        <div class="icon-keyframe"></div>
-        <div class="icon-keyframe"></div>
-      </div>
-      <div class="timeline-scrollspace">
-      </div>
-     </div>
-
-     <div class="timeline-object" id="t-ObjectE">
-      <div class="timeline-title">
-        Object E
-      </div>
-      <div class="timeline-animation">
-        <div class="timeline-animation-element"></div>
-        <div class="icon-keyframe"></div>
-        <div class="icon-keyframe"></div>
-      </div>
-      <div class="timeline-scrollspace">
-      </div>
-     </div>
 
 
 

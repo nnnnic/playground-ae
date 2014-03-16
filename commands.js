@@ -159,5 +159,12 @@ Commands = {
         AE.executeExtendScript("app.activeViewer.views[0].options.zoom = " + scale);
     },
 
-    setClassic: function() {}
+    setClassic: function() {},
+
+    setTimelinePosition: function(time) {
+        AE.executeExtendScript("app.activeViewer.views[0].time = " + time);
+
+    }
+
+
 }

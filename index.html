@@ -151,14 +151,9 @@
 
         <aside id="slideshow" ><div   class="topcoat-button-list">
 
-                   <input type='range' id='frameSeek' min='0' max='1024' onchange="AE.activeItem.frame=this.value"/>
+                   <input type='range' id='frameSeek' min='0' max='4' step='.5' value='0' onchange="AE.activeItem.time=this.value"/>
 
 
-           <div id="toggleIconMess" class="topcoat-button-list__item">
-                <button
-                    onClick='Commands.toggleIconMess()'
-                    class="topcoat-button-list__button"></button>
-            </div>
 
             <div id="rewindSlideshow" class="topcoat-button-list__item">
                 <button
