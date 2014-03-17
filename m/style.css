@@ -1,7 +1,7 @@
 * {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-	font-family: source-sans-pro, sans-serif;
+	font-family: "Adobe Clean UI", source-sans-pro, sans-serif;
 	font-weight: 100;
 	text-rendering: optimizeLegibility;
 }
@@ -10,7 +10,7 @@ body {
   background: #2D3032;*/
   background:none;
   color: #B5B8B8;
-  font-family: source-sans-pro, sans-serif;
+  font-family: "Adobe Clean UI", source-sans-pro, sans-serif;
   font-weight: 100;
   font-size:12px;
   -webkit-user-select: none;
@@ -356,15 +356,37 @@ input[type=color]::-webkit-color-swatch {
     0 1px 0 rgba(255,255,255,.5);
 }
 
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  line-height: 48px;
+  background: #232323;
+  border-bottom: 1px solid #1a1a1a;
+  z-index: 100;
+  padding: 4px 10px;
+}
+.app-header a {
+  text-decoration: none;
+  color: #505050;
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 30px;
+}
+.app-header a.selected {
+  color: white;
+}
 /* Panel ——————————————————————————————————————————————————————————————— */
 
 #panel {
   position: absolute;
   right: 0;
-  top: 0;
+  top: 48px;
   bottom: 0;
   width: 280px;
-  background-color: #242424;
+  background-color: #232323;
 }
 
 .panel-block {
@@ -443,7 +465,7 @@ div,p,h1,h2,h3,h4,h5,span{
   bottom: 0;
   left: 0;
   right: 0;
-  background: #242424;
+  background: #232323;
   height: 306px;
   margin: 0;
   border-top: 1px solid #1a1a1a;
@@ -494,6 +516,7 @@ div,p,h1,h2,h3,h4,h5,span{
 .timeline-scroll {
   position: absolute;
   height: 100%;
+  padding-bottom: 60px;
   width: 100%;
   z-index: 200;
 }
@@ -524,7 +547,7 @@ div,p,h1,h2,h3,h4,h5,span{
     display: block;
     padding: 6px 4px 2px 8px;
     z-index: 150;
-    background: #242424;
+    background: #232323;
   }
   .timeline-animation{
     padding: 0;
@@ -814,7 +837,7 @@ input[type=range]:active::-moz-range-thumb {
     -webkit-box-shadow: none;
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    background: #242424;
+    background: #232323;
 }
 
 /* Handle */
