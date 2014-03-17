@@ -163,6 +163,12 @@ secondsToPixels = function(seconds) {
     return (multiplicationFactor * seconds);
 }
 
+frameToSeconds = function(frames) {
+
+    return(frames / Commands.getFrameRate());
+
+}
+
 oneFrame = function() {
     var multiplicationFactor = (parseFloat(Commands.getTimelineDuration()) / Commands.getFrameRate()) / 10;
     return multiplicationFactor;
@@ -187,33 +193,33 @@ Commands = {
         Commands.setTimelinePosition(Commands.getTimelinePosition());
     },
 
-    setPlayheadBackFrame: function() {
+    setFrameBack: function() {
 
-        console.log(Commands.getTimelinePosition() - oneFrame());
-        //Commands.setTimelinePosition(Commands.getTimelinePosition() - oneFrame());
-
-    },
-
-    setPlayheadAheadFrame: function() {
-        console.log(Commands.getTimelinePosition());
-        if(Commands.getTimelinePosition() != 0.00) { 
-            console.log(Commands.getTimelinePosition());
-            console.log(oneFrame());
-            console.log(parseInt(Commands.getTimelinePosition() + oneFrame()));
-            Commands.setTimelinePosition(Commands.getTimelinePosition() + oneFrame());
-        } else { Commands.setTimelinePosition(oneFrame()); }
+        AE.activeItem.frame = AE.activeItem.frame - 1;
+        Commands.setTimelinePosition(frameToSeconds(AE.activeItem.frame));
+        console.log(AE.activeItem.frame)
+        Commands.getTimelinePosition();
 
     },
 
-    setPlayheadToBeginning: function() {
+    setFrameForward: function() {
+        AE.activeItem.frame = Math.round(AE.activeItem.frame + 1);
+        Commands.setTimelinePosition(frameToSeconds(AE.activeItem.frame));
+        console.log(AE.activeItem.frame)
+        Commands.getTimelinePosition();
+    },
+
+    setPositionToBeginning: function() {
 
         Commands.setTimelinePosition(0);
+        Commands.getTimelinePosition();
 
     },
 
-    setPlayheadToEnd: function() {
+    setPositionToEnd: function() {
 
         Commands.setTimelinePosition(_selectedComp[0].duration);
+        Commands.getTimelinePosition();
 
     },
 
