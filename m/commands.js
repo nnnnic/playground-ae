@@ -14,7 +14,7 @@ var makeMapWithFn = function(arr,fn) {
     var rval = {}
     forEach(arr,function(elt) {
         console.log("'",elt,"'")
-     rval[fn(elt)] = elt    
+     rval[fn(elt)] = elt
     })
     return rval
 }
@@ -45,16 +45,16 @@ var map = function(arrayLike,fn) {
 
 var getExtension = function(str) {
     console.log(str)
-    return str.substring(str.lastIndexOf('.')+1)   
+    return str.substring(str.lastIndexOf('.')+1)
 }
 var allExtensions = function(arr) {
 
-    return makeMapWithFn(arr, getExtension)  
+    return makeMapWithFn(arr, getExtension)
 }
 
 var imgtypes = {png:1, svg:1, jpg:1}
 var isImagePath = function(path) {
-    return getExtension(path) in imgtypes 
+    return getExtension(path) in imgtypes
 }
 var isCSSLink = function(link) { return link.rel === "stylesheet"}
 
@@ -65,7 +65,7 @@ onFilesChanged = function(arr) {
    console.log(types)
    if(types.js) {
         console.log("js changed. time to reload")
-        location.reload();  
+        location.reload();
         console.log("do we still get called?")
         console.log("yes, yes we do")
    } else if (types.png || types.svg || types.jpg) {
@@ -92,7 +92,7 @@ var mungeCounter = 0
 var mungeUrl = function(str) {
     mungeCounter++
     return str.substring(0,str.length-1) + '?'+mungeCounter+ ')';
-     
+
 }
 
 var reloadImages = function (arr) {
@@ -100,8 +100,8 @@ var reloadImages = function (arr) {
     var urlMap = makeMapWithFn(arr, function(elt) { return "url(file://"+elt+")"})
     console.log(urlMap)
 
-    
-    
+
+
 //    forEach(document.styleSheets,function(sheet) {
 //        forEach(sheet.cssRules, function(rule){
 //            var img = rule.style.backgroundImage
@@ -118,16 +118,16 @@ var reloadImages = function (arr) {
       if(img.length == 0) img = window.getComputedStyle(elt).backgroundImage + ""
       if(img.length == 0 || img == "none")
           return
-        
-          
+
+
         img = stripMunge(img)
           console.log(img)
-        
+
         if(img in urlMap) {
     //    if(urls.indexOf(img) != -1) {
             console.log("found it")
             // elt.style.setProperty("backgroundImage",)
-            elt.style.backgroundImage  = mungeUrl(img)  
+            elt.style.backgroundImage  = mungeUrl(img)
             console.log("ELT",elt)
             console.log("STYLE",elt.style)
             console.log("CSS",elt.style.cssText)
@@ -136,7 +136,7 @@ var reloadImages = function (arr) {
             console.log(elt.style.backgroundImage)
         }
     })
-    
+
 //    reloadCSS(arr)   // cheap but slow -- should just run through and update the styles
 }
 
@@ -144,7 +144,7 @@ reloadCSS = function(arr) {
     var links = document.getElementsByTagName("link")
     var cssLinks = filter(links,isCSSLink)
     var log = console.log
-    var cb = function(link) { 
+    var cb = function(link) {
         console.log(link)
         var temp = link.href
         link.href = ""
@@ -260,7 +260,7 @@ Commands = {
 
     getLayerDimensions: function(layerIndex) {
         var dimensions = [{
-                            width: _layersObject[layerIndex].width, 
+                            width: _layersObject[layerIndex].width,
                             height: _layersObject[layerIndex].height
                         }];
         return dimensions;
@@ -275,7 +275,7 @@ Commands = {
             //offset index because our _layersObject starts counting at 0 and AEs layers begin at 1
             selectedLayers.push(_layersObject[layerIndex-1]);
         }
-       
+
         return selectedLayers;
 
     },
@@ -326,12 +326,12 @@ Commands = {
         //set first element in _layersObject to be null, so that we can use AE indexes to call layers
         //_layersObject = ['null'];
         if (_selectedComp[0] && (_selectedComp[0].type === "Composition")) {
-            //console.log(AE.executeExtendScript("app.project.selection[0].layers[1]")[0]); 
+            //console.log(AE.executeExtendScript("app.project.selection[0].layers[1]")[0]);
             var numLayers = _selectedComp[0].layerNum;
             for(var i=0; i < numLayers; i++ ) {
                 //AE layers start counting at 1, need to offset
                 var AEindex = i + 1;
-                switch (AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"]")[0]) 
+                switch (AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"]")[0])
                 {
                     case "[object ShapeLayer]":
                     _layersObject.push({
@@ -350,7 +350,7 @@ Commands = {
                                     blendMode: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].blendingMode")[0],
                                     fill: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].property(2).property(1).property(2).property(3).color.value")[0],
                                     stroke: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].property(2).property(1).property(2).property(2).color.value")[0],
-                                    }); 
+                                    });
                     break;
                     case "[object CameraLayer]":
                     _layersObject.push({
@@ -365,7 +365,7 @@ Commands = {
                                     visible: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].enabled")[0],
                                     audioActive: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].audioActive")[0],
                                     blendMode: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].blendingMode")[0],
-                                    }); 
+                                    });
                     break;
                     default:
                     _layersObject.push({
@@ -382,7 +382,7 @@ Commands = {
                                     height: parseInt(AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].height")[0]),
                                     audioActive: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].audioActive")[0],
                                     blendMode: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].blendingMode")[0],
-                                    }); 
+                                    });
                 };
 
             };
@@ -391,7 +391,7 @@ Commands = {
     },
 
     displayLayersFromComp: function() {
-        
+
         if (Commands.getLayersFromComp()) {
             var textBuffer = [];
             for(var i = 0; i < _layersObject.length; i++) {

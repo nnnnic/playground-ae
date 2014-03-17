@@ -9,7 +9,7 @@
 
     <script type="text/javascript" src="commands.js"></script>
     <!-- <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui.min.js"></script> -->   
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script> -->
     <script type="text/javascript" src="../global.js"></script>
     <!-- <script type="text/javascript" src="main.js"></script> -->
     </head>
@@ -38,6 +38,9 @@
 <div id="panel">
   <div class="panel-block">
     Tools
+    <nav>
+      <a href="#">Tool</a>
+    </nav>
   </div>
   <div class="panel-block">
     Info
@@ -54,6 +57,10 @@
 <!-- Timeline -->
 
  <div class="timeline">
+
+  <header class="timeline-header">
+    <div id="marker-time">00:01</div>
+  </header>
 
   <!-- <div class="timeline-header">
     <div class="timeline-header-title">
@@ -80,7 +87,6 @@
       </div>
       <div class="timeline-animation-marker" id="ticks">
 
-        <div id="marker-time">00:01</div>
 
         <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition()"/>
         <svg id="timeline-ruler"></svg>

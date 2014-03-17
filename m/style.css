@@ -15,9 +15,11 @@ body {
   font-size:12px;
   -webkit-user-select: none;
   cursor:default;
+  overflow: hidden;
 }
 
-#tools, #toggle ,
+#tools,
+#toggle ,
 .panel {
 	position: absolute;
 	box-shadow: 0 2px 3px 0 rgba(0,0,0,.4);
@@ -410,7 +412,7 @@ div,p,h1,h2,h3,h4,h5,span{
 }
 
 .timeline {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
@@ -418,10 +420,17 @@ div,p,h1,h2,h3,h4,h5,span{
   height: 306px;
   margin: 0;
   border-top: 1px solid #1a1a1a;
+  overflow: auto;
 }
 
 .timeline-header {
+  position: fixed;
+  width: 100%;
+  background: #242424;
   height: 44px;
+  display: block;
+  z-index: 100;
+/*  box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);*/
   /*border-top:#222425 1px solid;*/
 }
 .timeline-header-title,
@@ -456,7 +465,7 @@ div,p,h1,h2,h3,h4,h5,span{
 
 */
 
-.timeline-scroll{
+.timeline-scroll {
   height: 144px;
   width: 100%;
 }
@@ -530,14 +539,14 @@ div,p,h1,h2,h3,h4,h5,span{
   position:absolute;
   cursor:ew-resize;
 }
+#timeline-header {
+  display: block;
+  width: auto;
+}
 .marker-time {
-  border-radius:4px;
-  height:20px;
-  width: 40px;
   position:absolute;
-  left:5px;
+  left:20px;
   top:1px;
-  padding:5px 6px 0 8px;
   -webkit-user-select: none;
   cursor:default;
   text-align:left;
@@ -648,4 +657,29 @@ div,p,h1,h2,h3,h4,h5,span{
 input[type=range]:active::-moz-range-thumb {
   border: 1px solid #0940fd;
   box-shadow: 0 0 0 2px #6fb5f1;
+}
+
+/* AVAST YE Scrollbars!!!! */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: transparent
+}
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: none;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #242424;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.2);
+    -webkit-box-shadow: none;
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,255,255,.5);
 }
