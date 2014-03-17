@@ -256,7 +256,28 @@ ul{
 	line-height: 22px;
 	margin-left: 10px;
 }
-
+nav.right,
+nav.left {
+  position: absolute;
+  top: 0;
+  height: 48px;
+  line-height: 48px;
+}
+nav.left {
+  left: 0;
+  text-align: left;
+}
+nav.right {
+  right: 0;
+  text-align: right;
+}
+#info-composition  {
+  position: absolute;
+  color: ;
+  top: 0;
+  right: 80px;
+  width: 400px;
+}
 
 /* Linked field ————————————————————————————————————*/
 .linked-field {
