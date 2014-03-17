@@ -399,7 +399,7 @@ Commands = {
                 //if(layer === "null") { continue };
                 textBuffer.push("<div class=\"timeline-title\">"+layer.name+"</div>");
                 textBuffer.push("<div class=\"timeline-animation\" id=\"timeline-animation-width\">");
-                textBuffer.push("<div class=\"timeline-animation-element ui-draggable\" style=\"left: " + secondsToPixels(layer.startTime) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
+                textBuffer.push("<div class=\"timeline-animation-element ui-draggable\" style=\"left: " + secondsToPixels(layer.inPoint) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
                 textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + (secondsToPixels(layer.outPoint) - 20) + "px\"></div>");
                 textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + secondsToPixels(layer.inPoint) + "px\"></div>");
                 textBuffer.push("</div>");
