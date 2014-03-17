@@ -195,7 +195,7 @@ Commands = {
 
     setFrameBack: function() {
 
-        AE.activeItem.frame = AE.activeItem.frame - 1;
+        AE.activeItem.frame = Math.round(AE.activeItem.frame - 1);
         Commands.setTimelinePosition(frameToSeconds(AE.activeItem.frame));
         console.log(AE.activeItem.frame)
         Commands.getTimelinePosition();
@@ -272,7 +272,8 @@ Commands = {
         var selectedLayers = [];
         for (i=0; i<selectedLayersLength; i++) {
             var layerIndex = parseInt(AE.executeExtendScript("app.project.selection[0].selectedLayers[" + i + "].index")[0]);
-            selectedLayers.push(_layersObject[layerIndex]);
+            //offset index because our _layersObject starts counting at 0 and AEs layers begin at 1
+            selectedLayers.push(_layersObject[layerIndex-1]);
         }
        
         return selectedLayers;
@@ -323,7 +324,7 @@ Commands = {
         // Only try this if we're dealing with a Composition, duh
         Commands.getBinData();
         //set first element in _layersObject to be null, so that we can use AE indexes to call layers
-        _layersObject = ['null'];
+        //_layersObject = ['null'];
         if (_selectedComp[0] && (_selectedComp[0].type === "Composition")) {
             //console.log(AE.executeExtendScript("app.project.selection[0].layers[1]")[0]); 
             var numLayers = _selectedComp[0].layerNum;
@@ -395,6 +396,7 @@ Commands = {
             var textBuffer = [];
             for(var i = 0; i < _layersObject.length; i++) {
                 var layer = _layersObject[i];
+                //if(layer === "null") { continue };
                 textBuffer.push("<div class=\"timeline-title\">"+layer.name+"</div>");
                 textBuffer.push("<div class=\"timeline-animation\" id=\"timeline-animation-width\">");
                 textBuffer.push("<div class=\"timeline-animation-element ui-draggable\" style=\"left: " + secondsToPixels(layer.startTime) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
