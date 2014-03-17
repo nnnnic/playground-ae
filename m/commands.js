@@ -156,13 +156,16 @@ reloadCSS = function(arr) {
 
 var _layersObject = [];
 var _timelinePixelWidth;
+var _selectedComp = [];
 
 secondsToPixels = function(seconds) {
-    var multiplicationFactor = parseFloat(Commands.getTimelineWidth()/Commands.getTimelineDuration());
-    console.log("x = " + multiplicationFactor);
-    console.log("seconds = " + seconds);
-
+    var multiplicationFactor = parseFloat(Commands.getTimelineWidth() / Commands.getTimelineDuration()).toFixed(2);
     return (multiplicationFactor * seconds);
+}
+
+oneFrame = function() {
+    var multiplicationFactor = (parseFloat(Commands.getTimelineDuration()) / Commands.getFrameRate()) / 10;
+    return multiplicationFactor;
 }
 
 Commands = {
@@ -172,6 +175,48 @@ Commands = {
 
     setClassic: function() {},
 
+    setPlay: function() {
+
+        AE.executeExtendScript("app.executeCommand(app.findMenuCommandId(\"RAM Preview\"))");
+
+    },
+
+    initView: function() {
+
+        Commands.displayLayersFromComp();
+        Commands.setTimelinePosition(Commands.getTimelinePosition());
+    },
+
+    setPlayheadBackFrame: function() {
+
+        console.log(Commands.getTimelinePosition() - oneFrame());
+        //Commands.setTimelinePosition(Commands.getTimelinePosition() - oneFrame());
+
+    },
+
+    setPlayheadAheadFrame: function() {
+        console.log(Commands.getTimelinePosition());
+        if(Commands.getTimelinePosition() != 0.00) { 
+            console.log(Commands.getTimelinePosition());
+            console.log(oneFrame());
+            console.log(parseInt(Commands.getTimelinePosition() + oneFrame()));
+            Commands.setTimelinePosition(Commands.getTimelinePosition() + oneFrame());
+        } else { Commands.setTimelinePosition(oneFrame()); }
+
+    },
+
+    setPlayheadToBeginning: function() {
+
+        Commands.setTimelinePosition(0);
+
+    },
+
+    setPlayheadToEnd: function() {
+
+        Commands.setTimelinePosition(_selectedComp[0].duration);
+
+    },
+
     setTimelinePosition: function(time) {
         AE.executeExtendScript("app.project.selection[0].time = " + time);
         document.getElementById("frameSeek").value = time;
@@ -179,8 +224,11 @@ Commands = {
     },
 
     getTimelinePosition: function(time) {
+        Commands.getTimelineDuration()
         var position = parseFloat(AE.executeExtendScript("app.project.selection[0].time")).toFixed(2);
         document.getElementById("marker-time").innerHTML = position;
+        //document.getElementById("frameSeek").value = position;
+        return position;
 
     },
 
@@ -191,23 +239,94 @@ Commands = {
     },
 
     getTimelineDuration: function() {
-        var compDuration = parseFloat(AE.executeExtendScript("app.project.selection[0].duration")[0]);
-        //var compFrameRate = AE.executeExtendScript("app.project.selection[0].frameRate")[0];
+        var compDuration = _selectedComp[0].duration;
+        var compFrameRate = _selectedComp[0].frameRate;
         document.getElementById("frameSeek").max = Math.round(compDuration);
-        //document.getElementById("frameSeek").step = compDuration/compFrameRate;
+        document.getElementById("frameSeek").step = (compDuration/compFrameRate) / 10;
         return compDuration;
+    },
+
+    getFrameRate: function() {
+
+        return _selectedComp[0].frameRate;
+
+    },
+
+    getLayerDimensions: function(layerIndex) {
+        var dimensions = [{
+                            width: _layersObject[layerIndex].width, 
+                            height: _layersObject[layerIndex].height
+                        }];
+        return dimensions;
+    },
+
+    getSelectedLayerInfo: function() {
+
+        var selectedLayersLength = parseInt(AE.executeExtendScript("app.project.selection[0].selectedLayers.length")[0]);
+        var selectedLayers = [];
+        for (i=0; i<selectedLayersLength; i++) {
+            var layerIndex = parseInt(AE.executeExtendScript("app.project.selection[0].selectedLayers[" + i + "].index")[0]);
+            selectedLayers.push(_layersObject[layerIndex]);
+        }
+       
+        return selectedLayers;
+
+    },
+
+    getBinData: function() {
+        _selectedComp = [];
+        if (AE.executeExtendScript("app.project.activeItem")[0] !== "null") {
+            switch (AE.executeExtendScript("app.project.selection[0].typeName")[0])
+            {
+                case "Composition":
+                _selectedComp.push({
+                                    name: AE.executeExtendScript("app.project.selection[0].name")[0],
+                                    duration: parseFloat(AE.executeExtendScript("app.project.selection[0].duration")[0]),
+                                    frameRate: parseFloat(AE.executeExtendScript("app.project.selection[0].frameRate")[0]),
+                                    layerNum: parseInt(AE.executeExtendScript("app.project.selection[0].layers.length")[0]),
+                                    type: AE.executeExtendScript("app.project.selection[0].typeName")[0],
+                                    });
+                //console.log(_selectedComp[0].type === "Composition")
+                break;
+                case "Footage":
+                _selectedComp.push({
+                                    name: AE.executeExtendScript("app.project.selection[0].name")[0],
+                                    duration: parseFloat(AE.executeExtendScript("app.project.selection[0].duration")[0]),
+                                    frameRate: parseFloat(AE.executeExtendScript("app.project.selection[0].frameRate")[0]),
+                                    type: AE.executeExtendScript("app.project.selection[0].typeName")[0],
+                                    });
+                break;
+                case "Folder":
+                _selectedComp.push({
+                                    name: AE.executeExtendScript("app.project.selection[0].name")[0],
+                                    type: AE.executeExtendScript("app.project.selection[0].typeName")[0],
+                                    items: AE.executeExtendScript("app.project.selection[0].numItems")[0],
+                                    });
+                break;
+                default:
+                _selectedComp.push({
+                                    name: AE.executeExtendScript("app.project.selection[0].name")[0],
+                                    type: AE.executeExtendScript("app.project.selection[0].typeName")[0],
+                                    });
+            }
+            return _selectedComp;
+        } else { console.log("Nothing selected in Bin") }
     },
 
     getLayersFromComp: function() {
         // Only try this if we're dealing with a Composition, duh
-        _layersObject = [];
-        if (AE.executeExtendScript("app.project.selection[0].typeName")[0] == "Composition") {
+        Commands.getBinData();
+        //set first element in _layersObject to be null, so that we can use AE indexes to call layers
+        _layersObject = ['null'];
+        if (_selectedComp[0] && (_selectedComp[0].type === "Composition")) {
             //console.log(AE.executeExtendScript("app.project.selection[0].layers[1]")[0]); 
-            var numLayers = AE.executeExtendScript("app.project.selection[0].layers.length")[0];
+            var numLayers = _selectedComp[0].layerNum;
             for(var i=0; i < numLayers; i++ ) {
                 //AE layers start counting at 1, need to offset
                 var AEindex = i + 1;
-                if (AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"]")[0] == "[object ShapeLayer]") {
+                switch (AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"]")[0]) 
+                {
+                    case "[object ShapeLayer]":
                     _layersObject.push({
                                     name: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].name")[0],
                                     type: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"]")[0],
@@ -218,10 +337,15 @@ Commands = {
                                     locked: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].locked")[0],
                                     selected: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].selected")[0],
                                     visible: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].enabled")[0],
+                                    width: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].width")[0],
+                                    height: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].height")[0],
+                                    audioActive: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].audioActive")[0],
+                                    blendMode: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].blendingMode")[0],
                                     fill: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].property(2).property(1).property(2).property(3).color.value")[0],
                                     stroke: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].property(2).property(1).property(2).property(2).color.value")[0],
                                     }); 
-                } else {
+                    break;
+                    case "[object CameraLayer]":
                     _layersObject.push({
                                     name: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].name")[0],
                                     type: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"]")[0],
@@ -232,32 +356,54 @@ Commands = {
                                     locked: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].locked")[0],
                                     selected: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].selected")[0],
                                     visible: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].enabled")[0],
+                                    audioActive: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].audioActive")[0],
+                                    blendMode: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].blendingMode")[0],
+                                    }); 
+                    break;
+                    default:
+                    _layersObject.push({
+                                    name: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].name")[0],
+                                    type: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"]")[0],
+                                    startTime: parseFloat(AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].startTime")[0]),
+                                    inPoint: parseFloat(AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].inPoint")[0]),
+                                    outPoint: parseFloat(AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].outPoint")[0]),
+                                    clipDuration: (AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].outPoint")[0] - AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].inPoint")[0]),
+                                    locked: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].locked")[0],
+                                    selected: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].selected")[0],
+                                    visible: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].enabled")[0],
+                                    width: parseInt(AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].width")[0]),
+                                    height: parseInt(AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].height")[0]),
+                                    audioActive: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].audioActive")[0],
+                                    blendMode: AE.executeExtendScript("app.project.selection[0].layers["+AEindex+"].blendingMode")[0],
                                     }); 
                 };
 
             };
             return _layersObject;
-        };
+        } else { return null };
     },
 
     displayLayersFromComp: function() {
-        Commands.getLayersFromComp();
-        var textBuffer = [];
-        for(var i = 0; i < _layersObject.length; i++) {
-            var layer = _layersObject[i];
-            textBuffer.push("<div class=\"timeline-title\">"+layer.name+"</div>");
-            textBuffer.push("<div class=\"timeline-animation\" id=\"timeline-animation-width\">");
-            textBuffer.push("<div class=\"timeline-animation-element ui-draggable\" style=\"left: " + secondsToPixels(layer.startTime) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
-            textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + (secondsToPixels(layer.outPoint) - 20) + "px\"></div>");
-            textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + secondsToPixels(layer.inPoint) + "px\"></div>");
-            textBuffer.push("</div>");
-            textBuffer.push("<div class=\"timeline-scrollspace\"></div>");
-            textBuffer.push("</div>");
-            console.log(secondsToPixels(layer.startTime))
+        
+        if (Commands.getLayersFromComp()) {
+            var textBuffer = [];
+            for(var i = 0; i < _layersObject.length; i++) {
+                var layer = _layersObject[i];
+                textBuffer.push("<div class=\"timeline-title\">"+layer.name+"</div>");
+                textBuffer.push("<div class=\"timeline-animation\" id=\"timeline-animation-width\">");
+                textBuffer.push("<div class=\"timeline-animation-element ui-draggable\" style=\"left: " + secondsToPixels(layer.startTime) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
+                textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + (secondsToPixels(layer.outPoint) - 20) + "px\"></div>");
+                textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + secondsToPixels(layer.inPoint) + "px\"></div>");
+                textBuffer.push("</div>");
+                textBuffer.push("<div class=\"timeline-scrollspace\"></div>");
+                textBuffer.push("</div>");
+                //console.log(secondsToPixels(layer.startTime))
+            }
+            //console.log(textBuffer)
+            var text = String(textBuffer.join(""));
+            document.getElementById("t-ObjectA").innerHTML = text;
+            Commands.getTimelinePosition();
         }
-        //console.log(textBuffer)
-        var text = String(textBuffer.join(""));
-        document.getElementById("t-ObjectA").innerHTML = text;
     }
 
 

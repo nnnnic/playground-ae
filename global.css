@@ -68,7 +68,7 @@
   border-radius: 0;
   background-color: #282828;
   border: 1px solid rgba(255,255,255, .1);
-  background-image: url('img/dropdown.svg');
+  /*background-image: url('img/dropdown.svg');*/
   background-repeat: no-repeat;
   background-position: center right;
 }

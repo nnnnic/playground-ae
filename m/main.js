@@ -1,31 +1,31 @@
 var keyBoxPos, keyBoxDim, timeBarKeyframe;
 
 //
-function setMarkerTime()
-{
-  var timeAll = $('#timeline-time').val();
-  var timeWidth = $('.timeline-animation-marker').width();
-  var timelineMarker = Math.round($('.timeline-marker').position().left);
-  var fullTime = timelineMarker / timeWidth * timeAll;
-  var seconds = Math.floor(fullTime) < 10 ? "0"+Math.floor(fullTime) : Math.floor(fullTime);
-  var decimalTime = Math.round(((fullTime- Math.floor(fullTime))*30)) < 10 ? "0"+Math.round(((fullTime- Math.floor(fullTime))*30)) : Math.round(((fullTime- Math.floor(fullTime))*30));
-  $('.marker-time').html(seconds + ":" + decimalTime)
-}
+// function setMarkerTime()
+// {
+//   var timeAll = $('#timeline-time').val();
+//   var timeWidth = $('.timeline-animation-marker').width();
+//   var timelineMarker = Math.round($('.timeline-marker').position().left);
+//   var fullTime = timelineMarker / timeWidth * timeAll;
+//   var seconds = Math.floor(fullTime) < 10 ? "0"+Math.floor(fullTime) : Math.floor(fullTime);
+//   var decimalTime = Math.round(((fullTime- Math.floor(fullTime))*30)) < 10 ? "0"+Math.round(((fullTime- Math.floor(fullTime))*30)) : Math.round(((fullTime- Math.floor(fullTime))*30));
+//   $('.marker-time').html(seconds + ":" + decimalTime)
+// }
 
 //
-function setMarkerTimeDisplay()
-{
-  var timeWidth = $('.timeline-animation-marker').width();
-  var timelineMarker = $('.timeline-marker').position().left;
-  var mark = $('.marker-time');
-  if(timeWidth-timelineMarker < 40)
-  {
-    mark.addClass('left')
-  }else if(mark.hasClass('left')){
-    mark.removeClass('left')
-  }
-  $('#timeline-fullmarker').css('height', $('.timeline-animation-element').length*23+"px")
-}
+// function setMarkerTimeDisplay()
+// {
+//   var timeWidth = $('.timeline-animation-marker').width();
+//   var timelineMarker = $('.timeline-marker').position().left;
+//   var mark = $('.marker-time');
+//   if(timeWidth-timelineMarker < 40)
+//   {
+//     mark.addClass('left')
+//   }else if(mark.hasClass('left')){
+//     mark.removeClass('left')
+//   }
+//   $('#timeline-fullmarker').css('height', $('.timeline-animation-element').length*23+"px")
+// }
 
 // Dragging the layer Bar
 function trackBarDrag(obj, start)
@@ -88,56 +88,56 @@ function setTimelineKeyframeObject(obj)
 };
 
 // PLAY BACK
-function playBack()
-{
-  //
-  $('#timeline-time').attr("disabled",'disabled');
-  $('#playBack').attr("disabled",'disabled');
+// function playBack()
+// {
+//   //
+//   $('#timeline-time').attr("disabled",'disabled');
+//   $('#playBack').attr("disabled",'disabled');
 
-  // check time
-  var nIntervId;
-  var count = 1;
-  var timeAll = $('#timeline-time').val();
-  var timelineMarker = Math.round($('.timeline-marker').position().left);
+//   // check time
+//   var nIntervId;
+//   var count = 1;
+//   var timeAll = $('#timeline-time').val();
+//   var timelineMarker = Math.round($('.timeline-marker').position().left);
 
-  $('.timeline-marker').css('left', 0)
-  setMarkerTime();
-  setMarkerTimeDisplay()
-  createPlayback();
-  createNewStylesheet(createAnimationCSS());
+//   $('.timeline-marker').css('left', 0)
+//   setMarkerTime();
+//   setMarkerTimeDisplay()
+//   createPlayback();
+//   createNewStylesheet(createAnimationCSS());
 
-  function createPlayback() {
-    nIntervId = setInterval(moveMarker, 33.3333333);
-  }
+//   function createPlayback() {
+//     nIntervId = setInterval(moveMarker, 33.3333333);
+//   }
 
-  function moveMarker() {
-    var killit = count >= timeAll*30 ? stopPlayback() : "";
-    // 90 frames = 3 seconds
-    // 1000 millisec = 33.3333 per frame
-    var posCount = 100/($('#timeline-time').val()*30) * count;
-    $('.timeline-marker').css('left', posCount + "%");
-    setMarkerTime();
-    setMarkerTimeDisplay();
-    count ++
-  }
-  function stopPlayback() {
-    $('#playBack').attr("disabled", false);
-    $('#timeline-time').attr("disabled",false);
-    $('.timeline-object').each(function()
-    {
-      var tmpName = $(this).attr('id').replace('t-','');
-      $("#"+tmpName).removeClass('a-'+tmpName+'');
-    });
-    setCurrentFrameProperties()
-    clearInterval(nIntervId);
-  }
+//   function moveMarker() {
+//     var killit = count >= timeAll*30 ? stopPlayback() : "";
+//     // 90 frames = 3 seconds
+//     // 1000 millisec = 33.3333 per frame
+//     var posCount = 100/($('#timeline-time').val()*30) * count;
+//     $('.timeline-marker').css('left', posCount + "%");
+//     setMarkerTime();
+//     setMarkerTimeDisplay();
+//     count ++
+//   }
+//   function stopPlayback() {
+//     $('#playBack').attr("disabled", false);
+//     $('#timeline-time').attr("disabled",false);
+//     $('.timeline-object').each(function()
+//     {
+//       var tmpName = $(this).attr('id').replace('t-','');
+//       $("#"+tmpName).removeClass('a-'+tmpName+'');
+//     });
+//     setCurrentFrameProperties()
+//     clearInterval(nIntervId);
+//   }
 
-  $('.timeline-object').each(function()
-  {
-    var tmpName = $(this).attr('id').replace('t-','');
-    $("#"+tmpName).attr('style',"").addClass('a-'+tmpName+'');
-  });
-}
+//   $('.timeline-object').each(function()
+//   {
+//     var tmpName = $(this).attr('id').replace('t-','');
+//     $("#"+tmpName).attr('style',"").addClass('a-'+tmpName+'');
+//   });
+// }
 
 function setCurrentFrameProperties()
 {
@@ -267,50 +267,50 @@ function setLayerSelection(obj)
 }
 
 // Create new animation css with time and properties for a layer
-function createAnimationCSS()
-{
-     $('p').html("")
-  // set overall time
-  var timeAll = $('#timeline-time').val()*1000;
-  var txtCSS = '';
-  $('.timeline-animation-element').each(function(){
-    var idname = $(this).parent().parent().attr('id');
-    var idname = $(this).parent().parent().attr('id').replace('t-', 'a-');
-    var tmp = getKeyframesPercentageX($(this));
-    var delayed = tmp[0]/100*timeAll;
+// function createAnimationCSS()
+// {
+//      $('p').html("")
+//   // set overall time
+//   var timeAll = $('#timeline-time').val()*1000;
+//   var txtCSS = '';
+//   $('.timeline-animation-element').each(function(){
+//     var idname = $(this).parent().parent().attr('id');
+//     var idname = $(this).parent().parent().attr('id').replace('t-', 'a-');
+//     var tmp = getKeyframesPercentageX($(this));
+//     var delayed = tmp[0]/100*timeAll;
 
-    txtCSS += '.'+idname+'{-webkit-animation: '+idname+'-cycle '+(timeAll)+'ms '+';}\r';
-    txtCSS += '@-webkit-keyframes '+idname+'-cycle {\r';
+//     txtCSS += '.'+idname+'{-webkit-animation: '+idname+'-cycle '+(timeAll)+'ms '+';}\r';
+//     txtCSS += '@-webkit-keyframes '+idname+'-cycle {\r';
 
-    txtCSS += tmp[0] > 0 ? '0% {  height: "50px";width: "50px";}\r' : "";
-    for(var i =0; i < tmp.length; i++)
-    {
-      var first = i == 0 ? "50" : "100";
-      txtCSS += "  "+tmp[i]+'%';
-      txtCSS += '{  height: '+first+'px;width: '+first+'px;}\r';
-    }
-    txtCSS += tmp[tmp.length-1] < 100 ? '100% {  height: 100px;width: 100px;}\r' : "";
-    txtCSS += '}';
-     //$('p').append("<br>" + tmp)
-  });
-  //$('p').append("<hr>" + txtCSS)
-   return txtCSS;
-}
+//     txtCSS += tmp[0] > 0 ? '0% {  height: "50px";width: "50px";}\r' : "";
+//     for(var i =0; i < tmp.length; i++)
+//     {
+//       var first = i == 0 ? "50" : "100";
+//       txtCSS += "  "+tmp[i]+'%';
+//       txtCSS += '{  height: '+first+'px;width: '+first+'px;}\r';
+//     }
+//     txtCSS += tmp[tmp.length-1] < 100 ? '100% {  height: 100px;width: 100px;}\r' : "";
+//     txtCSS += '}';
+//      //$('p').append("<br>" + tmp)
+//   });
+//   //$('p').append("<hr>" + txtCSS)
+//    return txtCSS;
+// }
 
-function createNewStylesheet(data){
-  if(document.getElementById ('animationStyles')){
-    var node = document.getElementById("animationStyles");
-    if (node.parentNode) {
-      node.parentNode.removeChild(node);
-    }
-  }
-  //document.getElementsByTagName('head')[0].removeChild('animationStyles');
-  var style = document.createElement('style');
-  style.type = 'text/css';
-  style.id = "animationStyles";
-  style.innerHTML = data;
-  document.getElementsByTagName('head')[0].appendChild(style);
-}
+// function createNewStylesheet(data){
+//   if(document.getElementById ('animationStyles')){
+//     var node = document.getElementById("animationStyles");
+//     if (node.parentNode) {
+//       node.parentNode.removeChild(node);
+//     }
+//   }
+//   //document.getElementsByTagName('head')[0].removeChild('animationStyles');
+//   var style = document.createElement('style');
+//   style.type = 'text/css';
+//   style.id = "animationStyles";
+//   style.innerHTML = data;
+//   document.getElementsByTagName('head')[0].appendChild(style);
+// }
 /*
 //example animation css:
 -webkit-animation: cycle 1000ms;
