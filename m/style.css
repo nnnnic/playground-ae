@@ -379,6 +379,21 @@ input[type=color]::-webkit-color-swatch {
   line-height: 48px;
   display: inline-block;
 }
+.info-item {
+  color: #505050;
+  width: 48px;
+  height: 48px;
+  line-height: 18px;
+  padding-bottom: 20px;
+  display: inline-block;
+}
+.effect-item a {
+  display: block;
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  padding: 12px 0;
+}
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
