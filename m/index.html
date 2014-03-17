@@ -21,6 +21,8 @@
     <option value="../wizard/index.html">Help</option>
   </select>
   <script>
+
+
   var timeOut = null;
   window.onresize = function(){
      if(timeOut != null) clearTimeout(timeOut);
@@ -58,58 +60,36 @@
 
  <div class="timeline">
 
+   <div id="playhead"></div>
+
   <header class="timeline-header">
     <div id="marker-time">00:01</div>
   </header>
 
-  <!-- <div class="timeline-header">
-    <div class="timeline-header-title">
-        Selected Z
-    </div>
-    <div class="timeline-header-animation">
-      Action
-      <button class="select">Open / Close</button>
-
-    </div>
-    <div class="timeline-playback">
-        Duration
-      <input class="timeline-time" id="timeline-time" placeholder="1" value="3">
-       <button class="" id="playBack">▶</button>
-      </div>
-
-  </div> -->
-
   <div class="timeline-scroll">
 
-    <div class="timeline-object222222">
-      <div class="timeline-title">
+    <div class="timeline-animation-marker" id="ticks">
 
-      </div>
-      <div class="timeline-animation-marker" id="ticks">
+      <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition()"/>
 
-
-        <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition()"/>
-        <svg id="timeline-ruler"></svg>
-      </div>
-      <div class="timeline-scrollspace">
-      </div>
-
+      <svg id="timeline-ruler"></svg>
     </div>
 
-    <div class="timeline-object" id="t-ObjectA">
-      <div class="timeline-title">
-        Object A
-      </div>
-      <div class="timeline-animation" id="timeline-animation-width">
-        <div class="timeline-animation-element"></div>
-        <div class="icon-keyframe" ></div>
-        <div class="icon-keyframe" ></div>
-      </div>
-      <div class="timeline-scrollspace">
-      </div>
-    </div>
+    <ul class="timeline-object" id="t-object">
+      <li class="timeline-layer">
 
+        <header class="timeline-title">
+          Object A
+        </header>
 
+        <div class="timeline-animation" id="timeline-animation-width">
+          <div class="timeline-animation-element"></div>
+          <div class="icon-keyframe" ></div>
+          <div class="icon-keyframe" ></div>
+        </div>
+
+      </li>
+    </ul>
 
    </div>
 </div>

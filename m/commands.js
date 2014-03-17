@@ -226,7 +226,6 @@ Commands = {
     setTimelinePosition: function(time) {
         AE.executeExtendScript("app.project.selection[0].time = " + time);
         document.getElementById("frameSeek").value = time;
-
     },
 
     getTimelinePosition: function(time) {
@@ -397,19 +396,20 @@ Commands = {
             for(var i = 0; i < _layersObject.length; i++) {
                 var layer = _layersObject[i];
                 //if(layer === "null") { continue };
-                textBuffer.push("<div class=\"timeline-title\">"+layer.name+"</div>");
+                textBuffer.push("<li class=\"timeline-layer\">");
+                textBuffer.push("<header class=\"timeline-title\">"+layer.name+"</header>");
                 textBuffer.push("<div class=\"timeline-animation\" id=\"timeline-animation-width\">");
                 textBuffer.push("<div class=\"timeline-animation-element ui-draggable\" style=\"left: " + secondsToPixels(layer.inPoint) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
                 textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + (secondsToPixels(layer.outPoint) - 20) + "px\"></div>");
                 textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + secondsToPixels(layer.inPoint) + "px\"></div>");
                 textBuffer.push("</div>");
-                textBuffer.push("<div class=\"timeline-scrollspace\"></div>");
                 textBuffer.push("</div>");
+                textBuffer.push("</li>");
                 //console.log(secondsToPixels(layer.startTime))
             }
             //console.log(textBuffer)
             var text = String(textBuffer.join(""));
-            document.getElementById("t-ObjectA").innerHTML = text;
+            document.getElementById("t-object").innerHTML = text;
             Commands.getTimelinePosition();
         }
     }
