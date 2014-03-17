@@ -639,9 +639,6 @@ div,p,h1,h2,h3,h4,h5,span{
 }
 
 #playhead {
-/* hiding for now */
-  display: none;
-
   position: absolute;
   top: 0;
   left: 50%;
@@ -651,6 +648,10 @@ div,p,h1,h2,h3,h4,h5,span{
   height: 100%;
   display: block;
   background-color: white;
+/* hiding for now */
+  display: none;
+/* end hiding for now */
+
 }
 
 .range-input::-moz-range-thumb,
