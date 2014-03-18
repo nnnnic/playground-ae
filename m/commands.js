@@ -257,7 +257,8 @@ Commands = {
         AE.executeExtendScript("app.project.selection[0].time = " + time);
         document.getElementById("frameSeek").value = time;
         document.getElementById("marker-time").innerHTML = Commands.displayFrames(time);
-        document.getElementById("playhead").style.left = secondsToPixels(Math.floor(time))+"px";
+        document.getElementById("playhead").style.left = (secondsToPixels(positionInSeconds)+250)+"px";
+//        document.getElementById("playhead").style.left = secondsToPixels(Math.floor(time))+"px";
 
     },
 

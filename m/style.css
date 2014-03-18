@@ -490,7 +490,8 @@ input[type=color]::-webkit-color-swatch {
     height: 30px;
     line-height: 30px;
     margin-right: 56px;
-    color: rgba(102,102,102,.9);
+    color: rgba(102,102,102,1);
+    font-weight: 500;
   }
 
 .timeline-animation-element {
@@ -602,6 +603,7 @@ input[type=color]::-webkit-color-swatch {
   height: 265px;
   display: block;
   background-color: #fff;
+  -webkit-transform: translate3d(0,0,0);
 }
 #playhead:after {
   content: '';
