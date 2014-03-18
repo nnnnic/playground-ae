@@ -50,10 +50,10 @@
       <label for="toggle-tools">Tools</label>
       <ul class="panel-block">
         <li class="tool-item"><a href="#"><img src="img/ico-arrow.svg"></a>
-        <li class="tool-item"><a href="#"><img src="img/ico-arrow.svg"></a>
-        <li class="tool-item"><a href="#"><img src="img/ico-arrow.svg"></a>
-        <li class="tool-item"><a href="#"><img src="img/ico-arrow.svg"></a>
-        <li class="tool-item"><a href="#"><img src="img/ico-arrow.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-target.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-drips.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-contrast.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-brush.svg"></a>
       </ul>
     </li>
     <li>
@@ -90,11 +90,11 @@
       <input type="checkbox" checked id="toggle-player">
       <label for="toggle-player">Player</label>
       <ul class="panel-block">
-        <li class="tool-item"><a href="#"><img src="img/ico-rewind.svg"></a>
-        <li class="tool-item"><a href="#"><img src="img/ico-back.svg"></a>
-        <li class="tool-item"><a href="#"><img src="img/ico-play.svg"></a>
-        <li class="tool-item"><a href="#"><img src="img/ico-forward.svg"></a>
-        <li class="tool-item"><a href="#"><img src="img/ico-ffwd.svg"></a>
+        <li class="tool-item"><a href="#" onclick="Commands.setPositionToBeginning()"><img src="img/ico-rewind.svg"></a>
+        <li class="tool-item"><a href="#" onclick="Commands.setFrameBack()"><img src="img/ico-back.svg"></a>
+        <li class="tool-item"><a href="#" onclick="Commands.setPlay()"><img src="img/ico-play.svg"></a>
+        <li class="tool-item"><a href="#" onclick="Commands.setFrameForward()"><img src="img/ico-forward.svg"></a>
+        <li class="tool-item"><a href="#" onclick="Commands.setPositionToEnd()"><img src="img/ico-ffwd.svg"></a>
       </ul>
     </li>
     <li>
@@ -116,7 +116,7 @@
 
  <div class="timeline">
 
-   <div id="playhead"></div>
+   
 
   <header class="timeline-header">
     <div id="marker-time">00:01</div>
@@ -127,7 +127,7 @@
     <div class="timeline-animation-marker" id="ticks">
 
       <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition()"/>
-
+      <div id="playhead"></div>
       <svg id="timeline-ruler"></svg>
     </div>
 

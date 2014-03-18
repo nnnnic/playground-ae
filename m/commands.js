@@ -156,12 +156,13 @@ reloadCSS = function(arr) {
 
 var _layersObject = [];
 var _timelinePixelWidth;
+var _timelineDuration;
 var _selectedComp = [];
 var _framesPerSecond;
 
 secondsToPixels = function(seconds) {
-    var multiplicationFactor = parseFloat(Commands.getTimelineWidth() / Commands.getTimelineDuration()).toFixed(2);
-    console.log(multiplicationFactor * seconds)
+    var multiplicationFactor = parseFloat(Commands.getTimelineWidth() / Commands.getTimelineDuration());
+    //console.log(multiplicationFactor * seconds)
     return (multiplicationFactor * seconds);
 }
 
@@ -172,8 +173,24 @@ frameToSeconds = function(frames) {
 }
 
 oneFrame = function() {
-    var multiplicationFactor = (parseFloat(Commands.getTimelineDuration()) / Commands.getFrameRate()) / 10;
+    var multiplicationFactor = (parseFloat(_timelineDuration) / _framesPerSecond) / 10;
     return multiplicationFactor;
+}
+
+logslider = function(position) {
+  // position will be between 0 and 100
+  var minp = oneFrame();
+  var maxp = Commands.getTimelineDuration();
+  console.log(maxp)
+  // The result should be between 100 an 10000000
+  var minv = Math.log(secondsToPixels(oneFrame()));
+  var maxv = Math.log(secondsToPixels(Commands.getTimelineDuration()));
+  console.log(maxv)
+  // calculate adjustment factor
+  var scale = (maxv-minv) / (maxp-minp);
+  console.log(scale)
+  console.log(minv + scale*(position-minp));
+  return Math.exp(minv + scale*position-minp);
 }
 
 Commands = {
@@ -183,32 +200,38 @@ Commands = {
 
     setClassic: function() {},
 
+    initView: function() {
+        Commands.getFramesPerSecond();
+        Commands.displayLayersFromComp();
+        Commands.setCompName();
+        Commands.setTimelinePosition(Commands.getTimelinePosition());
+    },
+
     setPlay: function() {
 
         AE.executeExtendScript("app.executeCommand(app.findMenuCommandId(\"RAM Preview\"))");
 
     },
 
-    initView: function() {
-        Commands.getFramesPerSecond();
-        Commands.displayLayersFromComp();
-        Commands.setTimelinePosition(Commands.getTimelinePosition());
-    },
-
     setFrameBack: function() {
 
-        AE.activeItem.frame = Math.round(AE.activeItem.frame - 1);
-        Commands.setTimelinePosition(frameToSeconds(AE.activeItem.frame));
-        console.log(AE.activeItem.frame)
-        Commands.getTimelinePosition();
+        var currentFrame = AE.activeItem.frame;
+        if (currentFrame > 1) {
+            AE.activeItem.frame = Math.round(currentFrame - 1);
+            Commands.setTimelinePosition(frameToSeconds(AE.activeItem.frame));
+            //console.log(AE.activeItem.frame)
+            Commands.getTimelinePosition();
+        }
 
     },
 
     setFrameForward: function() {
-        AE.activeItem.frame = Math.round(AE.activeItem.frame + 1);
-        Commands.setTimelinePosition(frameToSeconds(AE.activeItem.frame));
-        console.log(AE.activeItem.frame)
-        Commands.getTimelinePosition();
+        var currentFrame = AE.activeItem.frame;
+        if (currentFrame < (_selectedComp[0].duration * _framesPerSecond)) {
+            AE.activeItem.frame = Math.round(currentFrame + 1);
+            Commands.setTimelinePosition(frameToSeconds(AE.activeItem.frame));
+            Commands.getTimelinePosition();
+        }
     },
 
     setPositionToBeginning: function() {
@@ -225,10 +248,17 @@ Commands = {
 
     },
 
+    setCompName: function() {
+        var compDimensions = Commands.getCompDimensions();
+        document.getElementById("info-composition").innerText = Commands.getCompName() + " " + compDimensions.width + "x" + compDimensions.height;
+    },
+
     setTimelinePosition: function(time) {
         AE.executeExtendScript("app.project.selection[0].time = " + time);
         document.getElementById("frameSeek").value = time;
-        document.getElementById("playhead").style.left = secondsToPixels(time)+"px";
+        document.getElementById("marker-time").innerHTML = Commands.displayFrames(time);
+        document.getElementById("playhead").style.left = secondsToPixels(Math.floor(time))+"px";
+
     },
 
     getFramesPerSecond: function() {
@@ -239,9 +269,9 @@ Commands = {
 
     getTimelinePosition: function() {
         Commands.getTimelineDuration()
-        var positionInSeconds = parseFloat(AE.executeExtendScript("app.project.selection[0].time")).toFixed(2);
+        var positionInSeconds = parseFloat(AE.executeExtendScript("app.project.selection[0].time"));
         document.getElementById("marker-time").innerHTML = Commands.displayFrames(positionInSeconds);
-        document.getElementById("playhead").style.left = secondsToPixels(positionInSeconds)+"px";
+        document.getElementById("playhead").style.left = (secondsToPixels(positionInSeconds)*.89)+"px";
         return positionInSeconds;
 
     },
@@ -253,11 +283,12 @@ Commands = {
     },
 
     getTimelineDuration: function() {
-        var compDuration = _selectedComp[0].duration;
-        var compFrameRate = _selectedComp[0].frameRate;
-        document.getElementById("frameSeek").max = Math.round(compDuration);
-        document.getElementById("frameSeek").step = (compDuration/compFrameRate) / 10;
-        return compDuration;
+        _timelineDuration = _selectedComp[0].duration;
+        _framesPerSecond = _selectedComp[0].frameRate;
+        document.getElementById("frameSeek").max = Math.round(_timelineDuration);
+        document.getElementById("frameSeek").step = (_timelineDuration/_framesPerSecond) / 25;
+        //document.getElementById("frameSeek").step = _timelineDuration/_framesPerSecond;
+        return _timelineDuration;
     },
 
     getFrameRate: function() {
@@ -266,11 +297,24 @@ Commands = {
 
     },
 
+    getCompName: function() {
+
+        return _selectedComp[0].name;
+    },
+
     getLayerDimensions: function(layerIndex) {
-        var dimensions = [{
+        var dimensions = {
                             width: _layersObject[layerIndex].width,
                             height: _layersObject[layerIndex].height
-                        }];
+                        };
+        return dimensions;
+    },
+
+    getCompDimensions: function() {
+        var dimensions = {
+                            width: _selectedComp[0].width,
+                            height: _selectedComp[0].height
+                        };
         return dimensions;
     },
 
@@ -300,6 +344,8 @@ Commands = {
                                     frameRate: parseFloat(AE.executeExtendScript("app.project.selection[0].frameRate")[0]),
                                     layerNum: parseInt(AE.executeExtendScript("app.project.selection[0].layers.length")[0]),
                                     type: AE.executeExtendScript("app.project.selection[0].typeName")[0],
+                                    width: AE.executeExtendScript("app.project.selection[0].width")[0],
+                                    height: AE.executeExtendScript("app.project.selection[0].height")[0],
                                     });
                 //console.log(_selectedComp[0].type === "Composition")
                 break;
@@ -332,7 +378,7 @@ Commands = {
         // Only try this if we're dealing with a Composition, duh
         Commands.getBinData();
         //set first element in _layersObject to be null, so that we can use AE indexes to call layers
-        //_layersObject = ['null'];
+        _layersObject = [];
         if (_selectedComp[0] && (_selectedComp[0].type === "Composition")) {
             //console.log(AE.executeExtendScript("app.project.selection[0].layers[1]")[0]);
             var numLayers = _selectedComp[0].layerNum;
@@ -407,10 +453,10 @@ Commands = {
                 if(layer === "null") { continue };
                 textBuffer.push("<li class=\"timeline-layer\">");
                 textBuffer.push("<header class=\"timeline-title\">"+layer.name+"</header>");
-                textBuffer.push("<div class=\"timeline-animation\" id=\"timeline-animation-width\">");
-                textBuffer.push("<div class=\"timeline-animation-element ui-draggable\" style=\"left: " + secondsToPixels(layer.inPoint) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
-                textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + (secondsToPixels(layer.outPoint) - 20) + "px\"></div>");
-                textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + secondsToPixels(layer.inPoint) + "px\"></div>");
+                textBuffer.push("<div ondragenter=\"return dragEnter(event)\" ondrop=\"return dragDrop(event)\" ondragover=\"return dragOver(event)\" class=\"timeline-animation\" id=\"timeline-animation-width\">");
+                textBuffer.push("<div draggable = \"true\" class=\"timeline-animation-element\" style=\"left: " + secondsToPixels(layer.inPoint) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
+                textBuffer.push("<div draggable = \"true\" class=\"icon-keyframe\" style=\"left: " + (secondsToPixels(layer.outPoint) - 20) + "px\"></div>");
+                textBuffer.push("<div draggable = \"true\" class=\"icon-keyframe\" style=\"left: " + secondsToPixels(layer.inPoint) + "px\"></div>");
                 textBuffer.push("</div>");
                 textBuffer.push("</div>");
                 textBuffer.push("</li>");
