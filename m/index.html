@@ -8,11 +8,9 @@
     <link rel="stylesheet" href="style.css" type="text/css" media="screen">
 
     <script type="text/javascript" src="commands.js"></script>
-    <!-- <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui.min.js"></script> -->
     <script type="text/javascript" src="../global.js"></script>
-    <!-- <script type="text/javascript" src="main.js"></script> -->
     </head>
+
   <body>
 
   <select class="topcoat-select" id="selectPlayground" onchange="changeFunc();">
@@ -115,21 +113,23 @@
 
  <div class="timeline">
 
-   
-
   <header class="timeline-header">
 
     <div id="fps">00000 (29.97 fps)</div>
     <div id="marker-time">00:01</div>
 
+    <div id="timeline-ruler" class="timeline-ruler">
+      <div class="ruler-object">. 1s</div>
+      <div class="ruler-object">. 2s</div>
+      <div class="ruler-object">. 3s</div>
+      <div class="ruler-object">. 4s</div>
+      <div class="ruler-object">. 5s</div>
+    </div>
+
     <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition()"/>
 
     <div id="playhead"></div>
 
-    <div id="timeline-ruler">
-      <div class="ruler-object">. 1s</div>
-    </div>
-    
   </header>
 
     <ul class="timeline-object" id="t-object">

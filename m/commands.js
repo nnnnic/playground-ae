@@ -271,7 +271,7 @@ Commands = {
         Commands.getTimelineDuration()
         var positionInSeconds = parseFloat(AE.executeExtendScript("app.project.selection[0].time"));
         document.getElementById("marker-time").innerHTML = Commands.displayFrames(positionInSeconds);
-        document.getElementById("playhead").style.left = (secondsToPixels(positionInSeconds)*.89)+"px";
+        document.getElementById("playhead").style.left = (secondsToPixels(positionInSeconds)+250)+"px";
         return positionInSeconds;
 
     },

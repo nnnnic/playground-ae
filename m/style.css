@@ -241,7 +241,6 @@ nav.right {
 
 #info-composition  {
   position: absolute;
-  color: ;
   top: 0;
   right: 50px;
   width: 400px;
@@ -449,6 +448,7 @@ input[type=color]::-webkit-color-swatch {
   top: 30px;
   left: 250px;
   right: 0;
+  z-index: 500;
 }
 .timeline-scrollspace{
   width:2%;
@@ -473,11 +473,20 @@ input[type=color]::-webkit-color-swatch {
   left:1%;
 }
 #timeline-ruler {
-  postion: absolute;
-  display: block;
-  left: 250px;
-
+  position: absolute;
+  display: flex;
+  margin-left: 250px;
+  padding-top: 25px;
+  z-index: 1000;
+  pointer-events: none;
 }
+  #timeline-ruler .ruler-object {
+    display: flex;
+    float: left;
+    margin-right: 30px;
+    color: rgba(102,102,102,.9);
+  }
+
 .timeline-animation-element {
   background-color: rgba(255,255,255,.25);
   border-radius: 19px;
@@ -575,25 +584,32 @@ input[type=color]::-webkit-color-swatch {
 .topcoat-range-input--vertical::-webkit-slider-thumb {
   cursor: pointer;
   -webkit-appearance: none;
+  opacity: 0;
 }
 
 #playhead {
   position: absolute;
   top: 30px;
-  left: 50%;
-  z-index: 1000;
+  z-index: 1;
   content: '';
   width: 1px;
   height: 265px;
   display: block;
-  background-color: white;
-
+  background-color: #fff;
 }
-
-.range-input::-moz-range-thumb,
-.topcoat-range-input::-moz-range-thumb,
-.topcoat-range-input--vertical::-moz-range-thumb {
-  cursor: pointer;
+#playhead:after {
+  content: '';
+  height: 24px;
+  width: 56px;
+  margin-left: -28px;
+  margin-top: -12px;
+  display: block;
+  border: none;
+  border-radius: 24px;
+  background:#fff;
+  box-shadow: 0;
+  -webkit-transform-origin: center center;
+  z-index: 1;
 }
 
 .topcoat-range-input,
@@ -606,14 +622,14 @@ input[type=color]::-webkit-color-swatch {
 
 .topcoat-range-input::-webkit-slider-thumb,
 .topcoat-range-input--vertical::-webkit-slider-thumb {
-  height: 24px;
-  width: 56px;
+  height: 50px;
+  width: 100px;
   border: none;
   border-radius: 24px;
-  background:white;
+  background: aquamarine;
   box-shadow: 0;
-  margin-left: -23px;
-
+  -webkit-transform-origin: center center;
+  z-index: 9999;
 }
 
 /*
@@ -622,13 +638,8 @@ input[type=color]::-webkit-color-swatch {
 
 .topcoat-range-input:active::-webkit-slider-thumb,
 .topcoat-range-input--vertical:active::-webkit-slider-thumb {
-  border: 1px solid #0940fd;
-  box-shadow: 0 0 0 2px #6fb5f1;
-}
-
-input[type=range]:active::-moz-range-thumb {
-  border: 1px solid #0940fd;
-  box-shadow: 0 0 0 2px #6fb5f1;
+  border: 0;
+  box-shadow: none;
 }
 
 /* Topcoat Tree */
