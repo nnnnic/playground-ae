@@ -2,10 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="../global.css" type="text/css" media="screen">
+    <title></title>    
     <link rel="stylesheet" href="../topcoat/topcoat-desktop-dark.css" type="text/css" media="screen">
     <link rel="stylesheet" href="style.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="../global.css" type="text/css" media="screen">
 
     <script type="text/javascript" src="commands.js"></script>
     <script type="text/javascript" src="../global.js"></script>
@@ -13,11 +13,6 @@
 
   <body>
 
-  <select class="topcoat-select" id="selectPlayground" onchange="changeFunc();">
-    <option value="../index.html">Classic</option>
-    <option selected value="../m/index.html">M</option>
-    <option value="../wizard/index.html">Help</option>
-  </select>
   <script>
 
 
@@ -32,6 +27,16 @@
   }
 
   </script>
+
+<div id="playground-switch">
+  <select class="topcoat-select" id="selectPlayground" onchange="changeFunc();">
+    <option value="../index.html">Classic</option>
+    <option selected value="../m/index.html">M</option>
+    <option value="../wizard/index.html">Help</option>
+  </select>
+</div>
+
+
 
 <header class="app-header">
   <nav class="left"><a href="#"><img width="33" src="img/logo-ae.svg"></a> <a class="selected" href="#">Essentials</a> <a href="#">Animate</a> <a href="#">Track</a> <a href="#">Render</a> <a href="#">&hellip;</a></nav>
