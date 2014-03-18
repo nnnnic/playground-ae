@@ -648,9 +648,7 @@ input[type=color]::-webkit-color-swatch {
   box-shadow: none;
 }
 
-/* Topcoat Tree */
 /* Topcoat tree ———————————————————————————————————————— */
-
 .topcoat-tree {
   width: 100%;
   padding: 20px;
@@ -690,42 +688,51 @@ input[type=color]::-webkit-color-swatch {
       border: solid transparent;
       font-weight: 800;
       content: "...";
-      color: rgba(255,255,255,.2);
+      color: rgba(255,255,255,1);
     }
     .topcoat-tree input[type="checkbox"]:checked + label:after {
       content: "...";
+      color: rgba(255,255,255,.2);
     }
 .topcoat-tree > li > label + ul {
   margin: 0;
-  height: auto: ;
-  -webkit-transition: padding-top .1s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+  padding: 0;
+  height: auto;
+  -webkit-transition: height .1s cubic-bezier(0.455, 0.030, 0.515, 0.955);
 }
 .topcoat-tree > li > ul {}
+
 
 .topcoat-tree > li label + ul > li,
 .layers > li label + ul > li {
   opacity: 0;
-  height: 0%;
+  height: 0;
 }
 
 .topcoat-tree > li > label {
   cursor: pointer;
   display: block;
   padding: 10px 0;
-  font-size: 82%;
+  font-size: 90%;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   z-index: 2;
 }
 .topcoat-tree > li > label:after {
     content:'';
 }
+.topcoat-tree > li input[type="checkbox"] ~ ul {
+  line-height: 0;
+  height: 0;
+  -webkit-transition: all .1s cubic-bezier(0.455, 0.030, 0.515, 0.955); 
+}
 .topcoat-tree > li input[type="checkbox"]:checked ~ ul {
-  padding: 0;
   height: auto;
+  line-height: 100%;
+  padding: 0;
+  margin: 0;
 }
 .topcoat-tree > li input[type="checkbox"]:checked ~ ul > li {
-/*  display: block;*/
   height: auto;
   margin: 0;
   opacity: 1;
