@@ -256,8 +256,6 @@ Commands = {
     setTimelinePosition: function(time) {
         AE.executeExtendScript("app.project.selection[0].time = " + time);
         document.getElementById("frameSeek").value = time;
-<<<<<<< HEAD
-=======
         document.getElementById("marker-time").innerHTML = Commands.displayFrames(time);
         document.getElementById("playhead").style.left = secondsToPixels(Math.floor(time))+"px";
 
@@ -267,7 +265,6 @@ Commands = {
         _framesPerSecond = AE.executeExtendScript("app.project.selection[0].frameRate")[0];
         return _framesPerSecond;
 
->>>>>>> timriot
     },
 
     getTimelinePosition: function() {
@@ -306,11 +303,7 @@ Commands = {
     },
 
     getLayerDimensions: function(layerIndex) {
-<<<<<<< HEAD
-        var dimensions = [{
-=======
         var dimensions = {
->>>>>>> timriot
                             width: _layersObject[layerIndex].width,
                             height: _layersObject[layerIndex].height
                         };
@@ -457,19 +450,6 @@ Commands = {
             var textBuffer = [];
             for(var i = 0; i < _layersObject.length; i++) {
                 var layer = _layersObject[i];
-<<<<<<< HEAD
-                //if(layer === "null") { continue };
-                textBuffer.push("<li class=\"timeline-layer\">");
-                textBuffer.push("<header class=\"timeline-title\">"+layer.name+"</header>");
-                textBuffer.push("<div class=\"timeline-animation\" id=\"timeline-animation-width\">");
-                textBuffer.push("<div class=\"timeline-animation-element ui-draggable\" style=\"left: " + secondsToPixels(layer.inPoint) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
-                textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + (secondsToPixels(layer.outPoint) - 20) + "px\"></div>");
-                textBuffer.push("<div class=\"icon-keyframe ui-draggable\" style=\"left: " + secondsToPixels(layer.inPoint) + "px\"></div>");
-                textBuffer.push("</div>");
-                textBuffer.push("</div>");
-                textBuffer.push("</li>");
-                //console.log(secondsToPixels(layer.startTime))
-=======
                 if(layer === "null") { continue };
                 textBuffer.push("<li class=\"timeline-layer\">");
                 textBuffer.push("<header class=\"timeline-title\">"+layer.name+"</header>");
@@ -480,7 +460,6 @@ Commands = {
                 textBuffer.push("</div>");
                 textBuffer.push("</div>");
                 textBuffer.push("</li>");
->>>>>>> timriot
             }
             //console.log(textBuffer)
             var text = String(textBuffer.join(""));
