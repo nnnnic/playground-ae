@@ -9,7 +9,7 @@
 
     <script type="text/javascript" src="commands.js"></script>
     <!-- <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui.min.js"></script> -->   
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script> -->
     <script type="text/javascript" src="../global.js"></script>
     <!-- <script type="text/javascript" src="main.js"></script> -->
     </head>
@@ -21,6 +21,8 @@
     <option value="../wizard/index.html">Help</option>
   </select>
   <script>
+
+
   var timeOut = null;
   window.onresize = function(){
      if(timeOut != null) clearTimeout(timeOut);
@@ -34,20 +36,79 @@
   </script>
 
 
+<header class="app-header">
+  <nav class="left"><a href="#"><img width="33" src="img/logo-ae.svg"></a> <a class="selected" href="#">Essentials</a> <a href="#">Animate</a> <a href="#">Track</a> <a href="#">Render</a> <a href="#">&hellip;</a></nav>
+   <nav class="right"><div id="info-composition">Composition 1 1024x768</div> <a href="http://creative.adobe.com"><img width="48" src="img/ico-cloud.svg" target="_blank"></a></nav>
+</header>
+
 <!-- Panel !-->
 <div id="panel">
-  <div class="panel-block">
-    Tools
-  </div>
-  <div class="panel-block">
-    Info
-  </div>
-  <div class="panel-block">
-    Player
-  </div>
-  <div class="panel-block">
-    Effects
-  </div>
+  <ul class="topcoat-tree">
+<!-- Tools panel !-->
+    <li>
+      <input type="checkbox" checked id="toggle-tools">
+      <label for="toggle-tools">Tools</label>
+      <ul class="panel-block">
+        <li class="tool-item"><a href="#"><img src="img/ico-arrow.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-arrow.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-arrow.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-arrow.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-arrow.svg"></a>
+      </ul>
+    </li>
+    <li>
+      <input type="checkbox" checked id="toggle-info">
+      <label for="toggle-info">Info</label>
+      <ul class="panel-block">
+        <li class="info-item">
+          R<br>
+          255
+        </li>
+        <li class="info-item">
+          G<br>
+          255
+        </li>
+        <li class="info-item">
+          B<br>
+          255
+        </li>
+        <li class="info-item">
+          A<br>
+          100%
+        </li>
+        <li class="info-item">
+          X<br>
+          255
+        </li>
+        <li class="info-item">
+          Y<br>
+          255
+        </li>
+      </ul>
+    </li>
+    <li>
+      <input type="checkbox" checked id="toggle-player">
+      <label for="toggle-player">Player</label>
+      <ul class="panel-block">
+        <li class="tool-item"><a href="#"><img src="img/ico-rewind.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-back.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-play.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-forward.svg"></a>
+        <li class="tool-item"><a href="#"><img src="img/ico-ffwd.svg"></a>
+      </ul>
+    </li>
+    <li>
+      <input type="checkbox" checked id="toggle-effects">
+      <label for="toggle-effects">Effects</label>
+      <ul class="panel-block">
+        <li class="effect-item"><a href="#">3D Channel</a></li>
+        <li class="effect-item"><a href="#">Audio</a></li>
+        <li class="effect-item"><a href="#">Blur &amp; Sharpen</a></li>
+        <li class="effect-item"><a href="#">Channel</a></li>
+        <li class="effect-item"><a href="#">CINEMA 4D</a></li>
+      </ul>
+    </li>
+  </ul>
 </div>
 
 
@@ -55,55 +116,36 @@
 
  <div class="timeline">
 
-  <!-- <div class="timeline-header">
-    <div class="timeline-header-title">
-        Selected Z
-    </div>
-    <div class="timeline-header-animation">
-      Action
-      <button class="select">Open / Close</button>
+   <div id="playhead"></div>
 
-    </div>
-    <div class="timeline-playback">
-        Duration
-      <input class="timeline-time" id="timeline-time" placeholder="1" value="3">
-       <button class="" id="playBack">▶</button>
-      </div>
-
-  </div> -->
+  <header class="timeline-header">
+    <div id="marker-time">00:01</div>
+  </header>
 
   <div class="timeline-scroll">
 
-    <div class="timeline-object222222">
-      <div class="timeline-title">
+    <div class="timeline-animation-marker" id="ticks">
 
-      </div>
-      <div class="timeline-animation-marker" id="ticks">
+      <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition()"/>
 
-        <div id="marker-time">00:01</div>
-
-        <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition()"/>
-        <svg id="timeline-ruler"></svg>
-      </div>
-      <div class="timeline-scrollspace">
-      </div>
-
+      <svg id="timeline-ruler"></svg>
     </div>
 
-    <div class="timeline-object" id="t-ObjectA">
-      <div class="timeline-title">
-        Object A
-      </div>
-      <div class="timeline-animation" id="timeline-animation-width">
-        <div class="timeline-animation-element"></div>
-        <div class="icon-keyframe" ></div>
-        <div class="icon-keyframe" ></div>
-      </div>
-      <div class="timeline-scrollspace">
-      </div>
-    </div>
+    <ul class="timeline-object" id="t-object">
+      <li class="timeline-layer">
 
+        <header class="timeline-title">
+          Object A
+        </header>
 
+        <div class="timeline-animation" id="timeline-animation-width">
+          <div class="timeline-animation-element"></div>
+          <div class="icon-keyframe" ></div>
+          <div class="icon-keyframe" ></div>
+        </div>
+
+      </li>
+    </ul>
 
    </div>
 </div>
