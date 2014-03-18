@@ -63,6 +63,9 @@ ul {
 /*	display: block;*/
 	transition: all .2s cubic-bezier(0.455, 0.030, 0.515, 0.955);
 }
+#overlay.reveal-timeline {
+	bottom: 250px;
+}
 #overlay.off {
 	opacity: 0;
 /*	display: none;*/
@@ -161,19 +164,21 @@ ul {
 #howto-tools,
 #howto-tools.off {
 	position: absolute;
-	top: 10px;
-	left: 60px;
+	bottom: 0;
+	left: 0;
+	right: 0;
 	width: 500px;
 	opacity: 0;
-	background: url(arrow.png) left 10px no-repeat;
-	background-size: 51px 16px;
+	background: url(arrow-down.png) 360px bottom no-repeat;
+	background-size: 42px 121px;
 	padding-left: 61px;
 	transition: all .5s cubic-bezier(0.455, 0.030, 0.515, 0.955);
 	-webkit-transform: translate3d(0,0,0);
 }
 #howto-tools.on {
 	opacity: 1;
-	left: 10px;
+	left: 50px;
+	bottom: 20px;
 }
 	#btn-tools {
 		margin-top: 20px;

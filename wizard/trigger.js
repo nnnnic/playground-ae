@@ -41,12 +41,14 @@ function stepTwo() {
   blockOne.className = "guide-block fall";
 	blockTwo.className = "guide-block on";
   howtoTools.className = "coachmark off";
+theOverlay.className = "on";
 }
 
 function guideTools() {
   console.log("Showing you how to use tools.");
   howtoTools.className = "coachmark on";
   blockTwo.className = "guide-block off";
+  theOverlay.className = "on reveal-timeline";
 }
 
 function killGuide() {
