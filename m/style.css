@@ -474,16 +474,21 @@ input[type=color]::-webkit-color-swatch {
 }
 #timeline-ruler {
   position: absolute;
-  display: flex;
-  width: 100%;
-  margin-left: 250px;
-  padding-top: 24px;
+  top: 16px;
+  left: 250px;
+  display: block;
+  width: auto;
+  height: 30px;
+  line-height: 30px;
   z-index: 1000;
   pointer-events: none;
+  overflow: hidden;
 }
   #timeline-ruler .ruler-object {
     display: flex;
     float: left;
+    height: 30px;
+    line-height: 30px;
     margin-right: 56px;
     color: rgba(102,102,102,.9);
   }
