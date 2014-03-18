@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" href="../topcoat/topcoat-desktop-dark.css" type="text/css" media="screen">
     <link rel="stylesheet" href="../global.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="../topcoat/topcoat-desktop-dark.css" type="text/css" media="screen">
     <link rel="stylesheet" href="style.css" type="text/css" media="screen">
 
     <script type="text/javascript" src="commands.js"></script>
@@ -34,7 +34,6 @@
   }
 
   </script>
-
 
 <header class="app-header">
   <nav class="left"><a href="#"><img width="33" src="img/logo-ae.svg"></a> <a class="selected" href="#">Essentials</a> <a href="#">Animate</a> <a href="#">Track</a> <a href="#">Render</a> <a href="#">&hellip;</a></nav>
@@ -119,17 +118,19 @@
    
 
   <header class="timeline-header">
+
+    <div id="fps">00000 (29.97 fps)</div>
     <div id="marker-time">00:01</div>
-  </header>
 
-  <div class="timeline-scroll">
+    <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition()"/>
 
-    <div class="timeline-animation-marker" id="ticks">
+    <div id="playhead"></div>
 
-      <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition()"/>
-      <div id="playhead"></div>
-      <svg id="timeline-ruler"></svg>
+    <div id="timeline-ruler">
+      <div class="ruler-object">. 1s</div>
     </div>
+    
+  </header>
 
     <ul class="timeline-object" id="t-object">
       <li class="timeline-layer">

@@ -9,9 +9,10 @@
 
 #playground-switch {
   position: absolute;
-  bottom: 15px;
-  right: 15px;
-  z-index: 9999;
+  top: 15px;
+  left: 15px;
+  display: block;
+  z-index: 10000000;
 }
 
 .topcoat-select {
