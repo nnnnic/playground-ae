@@ -259,12 +259,11 @@ ul{
 nav.right,
 nav.left {
   position: absolute;
-  top: 0;
   height: 48px;
   line-height: 48px;
 }
 nav.left {
-  left: 0;
+  left: 20px;
   text-align: left;
 }
 nav.right {
@@ -384,19 +383,20 @@ input[type=color]::-webkit-color-swatch {
   right: 0;
   height: 48px;
   line-height: 48px;
+  display: block;
   background: #232323;
   border-bottom: 1px solid #1a1a1a;
   z-index: 100;
-  padding: 4px 10px;
+  padding: 4px 0;
 }
-.app-header a {
+.app-header nav.left a {
   text-decoration: none;
   color: #505050;
   font-size: 16px;
   font-weight: 500;
   margin-right: 30px;
 }
-.app-header a.selected {
+.app-header nav.left a.selected {
   color: white;
 }
 /* Panel ——————————————————————————————————————————————————————————————— */
