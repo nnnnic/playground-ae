@@ -1,4 +1,4 @@
-playground_ps
+playground_ae
 =============
 
-html5 world to run within photoshop playground
+html5 world to run within Ae playground
