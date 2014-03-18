@@ -259,11 +259,19 @@ ul{
 nav.right,
 nav.left {
   position: absolute;
+<<<<<<< HEAD
+=======
+  top: 0;
+>>>>>>> timriot
   height: 48px;
   line-height: 48px;
 }
 nav.left {
+<<<<<<< HEAD
   left: 20px;
+=======
+  left: 0;
+>>>>>>> timriot
   text-align: left;
 }
 nav.right {
@@ -383,6 +391,7 @@ input[type=color]::-webkit-color-swatch {
   right: 0;
   height: 48px;
   line-height: 48px;
+<<<<<<< HEAD
   display: block;
   background: #232323;
   border-bottom: 1px solid #1a1a1a;
@@ -390,13 +399,25 @@ input[type=color]::-webkit-color-swatch {
   padding: 4px 0;
 }
 .app-header nav.left a {
+=======
+  background: #232323;
+  border-bottom: 1px solid #1a1a1a;
+  z-index: 100;
+  padding: 4px 10px;
+}
+.app-header a {
+>>>>>>> timriot
   text-decoration: none;
   color: #505050;
   font-size: 16px;
   font-weight: 500;
   margin-right: 30px;
 }
+<<<<<<< HEAD
 .app-header nav.left a.selected {
+=======
+.app-header a.selected {
+>>>>>>> timriot
   color: white;
 }
 /* Panel ——————————————————————————————————————————————————————————————— */
@@ -577,7 +598,11 @@ div,p,h1,h2,h3,h4,h5,span{
 #frameSeek,
 .timeline-animation {
   width:88%;
+<<<<<<< HEAD
   left: 10%;
+=======
+  /* left: 10%;*/ 
+>>>>>>> timriot
 }
 #frameSeek {
   position: absolute;
@@ -604,6 +629,7 @@ div,p,h1,h2,h3,h4,h5,span{
 .timeline-animation-marker{
   position:relative;
   width:88%;
+  left: 120px;
   padding: 0px;
 }
 .timeline-marker{
@@ -716,7 +742,11 @@ div,p,h1,h2,h3,h4,h5,span{
   z-index: 1000;
   content: '';
   width: 1px;
+<<<<<<< HEAD
   height: 100%;
+=======
+  height: 265px;
+>>>>>>> timriot
   display: block;
   background-color: white;
 
@@ -744,6 +774,8 @@ div,p,h1,h2,h3,h4,h5,span{
   border-radius: 24px;
   background:white;
   box-shadow: 0;
+  margin-left: -23px;
+
 }
 
 /*
