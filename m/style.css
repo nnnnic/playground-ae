@@ -494,6 +494,11 @@ input[type=color]::-webkit-color-swatch {
     font-weight: 500;
   }
 
+.ruler-object:last-child {
+  margin-right: 0;
+
+}
+
 .timeline-animation-element {
   background-color: rgba(255,255,255,.25);
   border-radius: 19px;

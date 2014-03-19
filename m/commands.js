@@ -177,22 +177,6 @@ oneFrame = function() {
     return multiplicationFactor;
 }
 
-logslider = function(position) {
-  // position will be between 0 and 100
-  var minp = oneFrame();
-  var maxp = Commands.getTimelineDuration();
-  console.log(maxp)
-  // The result should be between 100 an 10000000
-  var minv = Math.log(secondsToPixels(oneFrame()));
-  var maxv = Math.log(secondsToPixels(Commands.getTimelineDuration()));
-  console.log(maxv)
-  // calculate adjustment factor
-  var scale = (maxv-minv) / (maxp-minp);
-  console.log(scale)
-  console.log(minv + scale*(position-minp));
-  return Math.exp(minv + scale*position-minp);
-}
-
 Commands = {
     setViewerZoom: function(scale) {
         AE.executeExtendScript("app.activeViewer.views[0].options.zoom = " + scale);
@@ -254,12 +238,23 @@ Commands = {
     },
 
     setTimelinePosition: function(time) {
+        var markerTime = Commands.displayFrames(time);
         AE.executeExtendScript("app.project.selection[0].time = " + time);
         document.getElementById("frameSeek").value = time;
-        document.getElementById("marker-time").innerHTML = Commands.displayFrames(time);
-        document.getElementById("playhead").style.left = (secondsToPixels(positionInSeconds)+250)+"px";
-//        document.getElementById("playhead").style.left = secondsToPixels(Math.floor(time))+"px";
+        document.getElementById("marker-time").innerText = markerTime;
+        document.getElementById("playhead").style.left = (secondsToPixels(time)+250)+"px";
+        Commands.setFramesPerSecond(time);
 
+    },
+
+    setFramesPerSecond: function(time) {
+        var frames = Math.round(time * _framesPerSecond);
+        if (frames < 10) {frames = "0000"+frames;}
+        if (frames < 99 && frames > 10) {frames = "000"+frames;}
+        if (frames < 999 && frames > 100) {frames = "00"+frames;}
+        if (frames < 9999 && frames > 1000) {frames = "0"+frames;}
+
+        document.getElementById("fps").innerText = frames + " (" + parseFloat(_framesPerSecond).toFixed(2) + " fps)";
     },
 
     getFramesPerSecond: function() {
@@ -268,12 +263,36 @@ Commands = {
 
     },
 
-    getTimelinePosition: function() {
-        Commands.getTimelineDuration()
-        var positionInSeconds = parseFloat(AE.executeExtendScript("app.project.selection[0].time"));
-        document.getElementById("marker-time").innerHTML = Commands.displayFrames(positionInSeconds);
+    getTimelinePosition: function(time) {
+        Commands.getTimelineDuration();
+        if (time) { 
+            var positionInSeconds = parseFloat(time);
+        } else { 
+            var positionInSeconds = parseFloat(AE.executeExtendScript("app.project.selection[0].time"));
+        }
+        var markerTime = Commands.displayFrames(positionInSeconds);
+        document.getElementById("marker-time").innerHTML = markerTime;
         document.getElementById("playhead").style.left = (secondsToPixels(positionInSeconds)+250)+"px";
+        Commands.setFramesPerSecond(time);
         return positionInSeconds;
+
+    },
+
+    setTimelineTicks: function() {
+        _timelinePixelWidth;
+        _framesPerSecond;
+        var textBuffer = [];
+        var ticks = Math.round(_timelineDuration);
+        //textBuffer.push("<div class=\"ruler-object\" style=\"left:" + (0 + 250) + "px \">" + ".1" + "s </div>");
+        for (var i = 0; i < ticks; i++) {
+            textBuffer.push("<div class=\"ruler-object\" style=\"margin-right: " + ((_timelinePixelWidth / ticks) - 11) + "px\" >" + i + "s </div>");
+        }
+        //textBuffer.push("<div class=\"ruler-object\" style=\"left:" + _timelinePixelWidth + "px \">" + _timelineDuration + "s </div>");
+
+        var text = String(textBuffer.join(""));
+        //console.log(_timelinePixelWidth)
+        document.getElementById("timeline-ruler").style.width = _timelinePixelWidth + "px";
+        document.getElementById("timeline-ruler").innerHTML = text;
 
     },
 
@@ -466,6 +485,7 @@ Commands = {
             var text = String(textBuffer.join(""));
             document.getElementById("t-object").innerHTML = text;
             Commands.getTimelinePosition();
+            Commands.setTimelineTicks();
         }
     },
 

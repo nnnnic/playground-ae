@@ -19,7 +19,7 @@
   var timeOut = null;
   window.onresize = function(){
      if(timeOut != null) clearTimeout(timeOut);
-     timeOut = setTimeout(Commands.displayLayersFromComp(), 100);
+     timeOut = setTimeout(Commands.initView(), 100);
   }
 
   window.onload = function() {
@@ -150,7 +150,7 @@
       <div class="ruler-object">. 24s</div>
     </div>
 
-    <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition()"/>
+    <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition(this.value)"/>
 
     <div id="playhead"></div>
 
