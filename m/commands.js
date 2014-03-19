@@ -285,7 +285,7 @@ Commands = {
         var ticks = Math.round(_timelineDuration);
         //textBuffer.push("<div class=\"ruler-object\" style=\"left:" + (0 + 250) + "px \">" + ".1" + "s </div>");
         for (var i = 0; i < ticks; i++) {
-            textBuffer.push("<div class=\"ruler-object\" style=\"margin-right: " + ((_timelinePixelWidth / ticks) - 11) + "px\" >" + i + "s </div>");
+            textBuffer.push("<div class=\"ruler-object\" style=\"margin-right: " + ((_timelinePixelWidth / _timelineDuration) - 11) + "px\" >" + i + "s </div>");
         }
         //textBuffer.push("<div class=\"ruler-object\" style=\"left:" + _timelinePixelWidth + "px \">" + _timelineDuration + "s </div>");
 
@@ -473,7 +473,7 @@ Commands = {
                 if(layer === "null") { continue };
                 textBuffer.push("<li class=\"timeline-layer\">");
                 textBuffer.push("<header class=\"timeline-title\">"+layer.name+"</header>");
-                textBuffer.push("<div ondragenter=\"return dragEnter(event)\" ondrop=\"return dragDrop(event)\" ondragover=\"return dragOver(event)\" class=\"timeline-animation\" id=\"timeline-animation-width\">");
+                textBuffer.push("<div class=\"timeline-animation\" id=\"timeline-animation-width\">");
                 textBuffer.push("<div draggable = \"true\" class=\"timeline-animation-element\" style=\"left: " + secondsToPixels(layer.inPoint) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
                 textBuffer.push("<div draggable = \"true\" class=\"icon-keyframe\" style=\"left: " + (secondsToPixels(layer.outPoint) - 20) + "px\"></div>");
                 textBuffer.push("<div draggable = \"true\" class=\"icon-keyframe\" style=\"left: " + secondsToPixels(layer.inPoint) + "px\"></div>");
