@@ -242,7 +242,7 @@ Commands = {
         AE.executeExtendScript("app.project.selection[0].time = " + time);
         document.getElementById("frameSeek").value = time;
         document.getElementById("marker-time").innerText = markerTime;
-        document.getElementById("playhead").style.left = (secondsToPixels(time)+250)+"px";
+//        document.getElementById("playhead").style.left = (secondsToPixels(time)+250)+"px";
         Commands.setFramesPerSecond(time);
 
     },
@@ -272,7 +272,7 @@ Commands = {
         }
         var markerTime = Commands.displayFrames(positionInSeconds);
         document.getElementById("marker-time").innerHTML = markerTime;
-        document.getElementById("playhead").style.left = (secondsToPixels(positionInSeconds)+250)+"px";
+//        document.getElementById("playhead").style.left = (secondsToPixels(positionInSeconds)+250)+"px";
         Commands.setFramesPerSecond(time);
         return positionInSeconds;
 
