@@ -61,7 +61,8 @@
     <li>
       <input type="checkbox" checked id="toggle-info">
       <label for="toggle-info">Info</label>
-      <ul class="panel-block">
+      <a id="color-chip" href="#" style="background-color: #09c;"></a>
+      <ul class="panel-block info-stuff">
         <li class="info-item">
           R<br>
           255
@@ -94,7 +95,7 @@
       <ul class="panel-block">
         <li class="tool-item"><a href="#" onclick="Commands.setPositionToBeginning()"><img src="img/ico-rewind.svg"></a>
         <li class="tool-item"><a href="#" onclick="Commands.setFrameBack()"><img src="img/ico-back.svg"></a>
-        <li class="tool-item"><a href="#" onclick="Commands.setPlay()"><img src="img/ico-play.svg"></a>
+        <li class="tool-item"><a href="#" onclick="Commands.setPlay()"><img id="playbtnson" src="img/ico-play.svg"></a>
         <li class="tool-item"><a href="#" onclick="Commands.setFrameForward()"><img src="img/ico-forward.svg"></a>
         <li class="tool-item"><a href="#" onclick="Commands.setPositionToEnd()"><img src="img/ico-ffwd.svg"></a>
       </ul>
@@ -122,6 +123,8 @@
 
     <div id="fps">00000 (29.97 fps)</div>
     <div id="marker-time">00:01</div>
+
+    <div class="group-idunno"><a href="#"><img src="img/ico-palette.svg"></a> <a href="#"><img src="img/ico-add.svg"></a></div>
 
     <div id="timeline-ruler" class="timeline-ruler">
       <div class="ruler-object">. 1s</div>
@@ -151,8 +154,6 @@
     </div>
 
     <input type='range' class="topcoat-range-input" id='frameSeek' value="0" min="0" max=".2" step=".01" onchange="AE.activeItem.time=this.value; Commands.getTimelinePosition(this.value)"/>
-
-
 
   </header>
 

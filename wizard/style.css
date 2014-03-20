@@ -121,7 +121,8 @@ ul {
 	opacity: 0;
 }
 
-#step-one.fall {
+#step-one.fall,
+#howto-video {
 	top: 200%;
 }
 

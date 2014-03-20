@@ -472,7 +472,7 @@ Commands = {
                 var layer = _layersObject[i];
                 if(layer === "null") { continue };
                 textBuffer.push("<li class=\"timeline-layer\">");
-                textBuffer.push("<header class=\"timeline-title\">"+layer.name+"</header>");
+                textBuffer.push("<header class=\"timeline-title\">"+layer.name+"<span class='layer-tools'><a href='#'><img src='img/ico-audio.svg'></a> <a href='#'><img src='img/ico-solo.svg'></a> <a href='#'><img src='img/ico-visibility.svg'></a> <a href='#'><img src='img/ico-lock.svg'></a></span></header>");
                 textBuffer.push("<div class=\"timeline-animation\" id=\"timeline-animation-width\">");
                 textBuffer.push("<div draggable = \"true\" class=\"timeline-animation-element\" style=\"left: " + secondsToPixels(layer.inPoint) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
                 textBuffer.push("<div draggable = \"true\" class=\"icon-keyframe\" style=\"left: " + (secondsToPixels(layer.outPoint) - 20) + "px\"></div>");
