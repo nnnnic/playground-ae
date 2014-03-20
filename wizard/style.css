@@ -64,7 +64,7 @@ ul {
 	transition: all .2s cubic-bezier(0.455, 0.030, 0.515, 0.955);
 }
 #overlay.reveal-timeline {
-	bottom: 250px;
+	bottom: 305px;
 }
 #overlay.off {
 	opacity: 0;
@@ -98,7 +98,7 @@ ul {
 }
 .guide-block.off {
 	opacity: 0;
-	top: 200%;
+	top: 300%;
 }
 .coachmark,
 .coachmark.on {
@@ -127,7 +127,7 @@ ul {
 
 #step-one.fall,
 #howto-video.fall {
-	top: 200%;
+	top: 300%;
 }
 
 #step-two ul {

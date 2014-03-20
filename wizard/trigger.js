@@ -62,7 +62,7 @@ function guideVideo() {
   console.log("VIDEOOOOOOOOOJOOOOOOO!!!!");
 
   howtoTools.className = "coachmark off";
-  howtoVideo.innerHTML = '<h3>3D Widgets Script Demo</h3><iframe width="560" height="315" src="http://www.youtube.com/embed/2KGz9-hoVJc?autoplay=1" frameborder="0" allowfullscreen ></iframe><a onclick="stepTwo();" href="#" class="topcoat-button--large">Got it</a>';
+  howtoVideo.innerHTML = '<h3>Masks, Shapes &amp; Rotoscoping</h3><iframe width="600" height="338" src="http://www.youtube.com/embed/whBKmFA0wVg?autoplay=1" frameborder="0" allowfullscreen=""></iframe><a onclick="stepTwo();" href="#" class="topcoat-button--large">Got it</a>';
   howtoVideo.className = "guide-block on";
   blockTwo.className = "guide-block off";
   theOverlay.className = "on";
