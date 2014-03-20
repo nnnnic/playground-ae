@@ -92,6 +92,10 @@ ul {
 	opacity: 1;
 	transition: all .5s cubic-bezier(0.455, 0.030, 0.515, 0.955);
 }
+.guide-block iframe {
+	margin-left: -48px;
+	margin-bottom: 20px;
+}
 .guide-block.off {
 	opacity: 0;
 	top: 200%;
@@ -122,7 +126,7 @@ ul {
 }
 
 #step-one.fall,
-#howto-video {
+#howto-video.fall {
 	top: 200%;
 }
 

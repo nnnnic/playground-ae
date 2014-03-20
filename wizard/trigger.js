@@ -44,7 +44,8 @@ function startWizard() {
 function stepTwo() {
   blockOne.className = "guide-block fall";
 	blockTwo.className = "guide-block on";
-  howtoVideo.className = "guide-block fall";
+  howtoVideo.className = "guide-block off";
+  howtoVideo.innerHTML = '';
   howtoTools.className = "coachmark off";
   theOverlay.className = "on";
 }
@@ -53,20 +54,18 @@ function guideTools() {
   console.log("Showing you how to use tools.");
   howtoTools.className = "coachmark on";
   howtoVideo.className = "guide-block off";
+  howtoVideo.innerHTML = '';
   blockTwo.className = "guide-block off";
   theOverlay.className = "on reveal-timeline";
 }
 function guideVideo() {
   console.log("VIDEOOOOOOOOOJOOOOOOO!!!!");
 
-  blockOne.className = "guide-block fall";
-  blockTwo.className = "guide-block fall";
   howtoTools.className = "coachmark off";
-
+  howtoVideo.innerHTML = '<h3>3D Widgets Script Demo</h3><iframe width="560" height="315" src="http://www.youtube.com/embed/2KGz9-hoVJc?autoplay=1" frameborder="0" allowfullscreen ></iframe><a onclick="stepTwo();" href="#" class="topcoat-button--large">Got it</a>';
   howtoVideo.className = "guide-block on";
-
+  blockTwo.className = "guide-block off";
   theOverlay.className = "on";
-
 }
 
 function killGuide() {
@@ -77,6 +76,7 @@ function killGuide() {
   blockTwo.className = "guide-block fall off";
   howtoTools.className = "coachmark off";
   howtoVideo.className = "guide-block fall off";
+  howtoVideo.innerHTML = '';
 }
 
 window.onload = startWizard;
