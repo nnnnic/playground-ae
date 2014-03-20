@@ -160,8 +160,44 @@ var _timelineDuration;
 var _selectedComp = [];
 var _framesPerSecond;
 
+
+receiveMessage = function(message) {
+    console.log("received: " + message.data, "received");
+    var data = JSON.parse(message.data)
+    if(data.fill) {
+      var fillRGB = data.fill;
+      console.log(fillRGB);
+      Commands.setColorChip(fillRGB.red, fillRGB.green, fillRGB.blue);
+    }
+    if(data.stroke) { 
+      var strokeRGB = data.stroke;
+      Commands.setColorChip(strokeRGB.red, strokeRGB.green, strokeRGB.blue);
+    }
+    if(data.sampled) {  
+      var sampleRGB = data.sampled;
+      Commands.setColorChip(Math.round(sampleRGB.red), Math.round(sampleRGB.green), Math.round(sampleRGB.blue));
+    }
+
+}
+
+createWebSocketConnection = function() {
+    var wsUrl;
+    // "wss" is for secure conenctions over https, "ws" is for regular
+    if (window.location.protocol === "https:") {
+        wsUrl = "wss://127.0.0.1:3000/";
+    } else {
+        wsUrl = "ws://127.0.0.1:3000/";
+    }
+    
+    // create the websocket and immediately bind handlers
+    ws = new WebSocket(wsUrl);
+    ws.onopen = function () { console.log("opened websocket"); };
+    ws.onmessage = receiveMessage;
+    ws.onclose = function () { displayState("closed websocket"); };
+}
+
 secondsToPixels = function(seconds) {
-    var multiplicationFactor = parseFloat(Commands.getTimelineWidth() / Commands.getTimelineDuration());
+    var multiplicationFactor = parseFloat(Commands.getTimelineWidth() / Commands.getTimelineDuration() - 3); //<----- HACKTASTIC - Timeline is being written incorrectly, so here's a hack for demo purposes
     //console.log(multiplicationFactor * seconds)
     return (multiplicationFactor * seconds);
 }
@@ -189,6 +225,20 @@ Commands = {
         Commands.displayLayersFromComp();
         Commands.setCompName();
         Commands.setTimelinePosition(Commands.getTimelinePosition());
+        Commands.crossAppInit();
+    },
+
+    setColorChip: function(r, g, b) {
+        var textBuffer = [];
+        textBuffer.push("<li class=\"info-item\"> R<br>" + " " + r  + " " + "</li>")
+        textBuffer.push("<li class=\"info-item\"> G<br>" + " " + g + " " + "</li>")
+        textBuffer.push("<li class=\"info-item\"> B<br>" + " " + b + " " + "</li>")
+        textBuffer.push("<li class=\"info-item\">A<br>100%</li>")
+        textBuffer.push("<li class=\"info-item\">X<br>255</li>")
+        textBuffer.push("<li class=\"info-item\">Y<br>255</li>")
+        var text = String(textBuffer.join(""));
+        document.getElementById("info-stuff").innerHTML = text;
+        document.getElementById("color-chip").style.backgroundColor = "rgb\(" + r +", " + g +", " + b + "\)";
     },
 
     setPlay: function() {
@@ -242,7 +292,6 @@ Commands = {
         AE.executeExtendScript("app.project.selection[0].time = " + time);
         document.getElementById("frameSeek").value = time;
         document.getElementById("marker-time").innerText = markerTime;
-//        document.getElementById("playhead").style.left = (secondsToPixels(time)+250)+"px";
         Commands.setFramesPerSecond(time);
 
     },
@@ -255,6 +304,24 @@ Commands = {
         if (frames < 9999 && frames > 1000) {frames = "0"+frames;}
 
         document.getElementById("fps").innerText = frames + " (" + parseFloat(_framesPerSecond).toFixed(2) + " fps)";
+    },
+
+    setTimelineTicks: function() {
+        _timelinePixelWidth;
+        _framesPerSecond;
+        var textBuffer = [];
+        var ticks = Math.round(_timelineDuration);
+        //textBuffer.push("<div class=\"ruler-object\" style=\"left:" + (0 + 250) + "px \">" + ".1" + "s </div>");
+        for (var i = 0; i < ticks; i++) {
+            textBuffer.push("<div class=\"ruler-object\" style=\"margin-right: " + ((_timelinePixelWidth / _timelineDuration)-15) + "px\" >" + i + "s </div>");
+        }
+        //textBuffer.push("<div class=\"ruler-object\" style=\"left:" + _timelinePixelWidth + "px \">" + _timelineDuration + "s </div>");
+
+        var text = String(textBuffer.join(""));
+        //console.log(_timelinePixelWidth)
+        document.getElementById("timeline-ruler").style.width = _timelinePixelWidth + "px";
+        document.getElementById("timeline-ruler").innerHTML = text;
+
     },
 
     getFramesPerSecond: function() {
@@ -272,27 +339,8 @@ Commands = {
         }
         var markerTime = Commands.displayFrames(positionInSeconds);
         document.getElementById("marker-time").innerHTML = markerTime;
-//        document.getElementById("playhead").style.left = (secondsToPixels(positionInSeconds)+250)+"px";
-        Commands.setFramesPerSecond(time);
+        Commands.setFramesPerSecond(positionInSeconds);
         return positionInSeconds;
-
-    },
-
-    setTimelineTicks: function() {
-        _timelinePixelWidth;
-        _framesPerSecond;
-        var textBuffer = [];
-        var ticks = Math.round(_timelineDuration);
-        //textBuffer.push("<div class=\"ruler-object\" style=\"left:" + (0 + 250) + "px \">" + ".1" + "s </div>");
-        for (var i = 0; i < ticks; i++) {
-            textBuffer.push("<div class=\"ruler-object\" style=\"margin-right: " + ((_timelinePixelWidth / _timelineDuration) - 11) + "px\" >" + i + "s </div>");
-        }
-        //textBuffer.push("<div class=\"ruler-object\" style=\"left:" + _timelinePixelWidth + "px \">" + _timelineDuration + "s </div>");
-
-        var text = String(textBuffer.join(""));
-        //console.log(_timelinePixelWidth)
-        document.getElementById("timeline-ruler").style.width = _timelinePixelWidth + "px";
-        document.getElementById("timeline-ruler").innerHTML = text;
 
     },
 
@@ -472,7 +520,7 @@ Commands = {
                 var layer = _layersObject[i];
                 if(layer === "null") { continue };
                 textBuffer.push("<li class=\"timeline-layer\">");
-                textBuffer.push("<header class=\"timeline-title\">"+layer.name+"<span class='layer-tools'><a href='#'><img src='img/ico-audio.svg'></a> <a href='#'><img src='img/ico-solo.svg'></a> <a href='#'><img src='img/ico-visibility.svg'></a> <a href='#'><img src='img/ico-lock.svg'></a></span></header>");
+                textBuffer.push("<header class=\"timeline-title\">" + layer.name + "<span class='layer-tools'><a href='#'><img src='img/ico-audio.svg'></a> <a href='#'><img src='img/ico-solo.svg'></a> <a href='#'><img src='img/ico-visibility.svg'></a> <a href='#'><img src='img/ico-lock.svg'></a></span></header>");
                 textBuffer.push("<div class=\"timeline-animation\" id=\"timeline-animation-width\">");
                 textBuffer.push("<div draggable = \"true\" class=\"timeline-animation-element\" style=\"left: " + secondsToPixels(layer.inPoint) + "px; width: " + secondsToPixels(layer.clipDuration) + "px;\"></div>");
                 textBuffer.push("<div draggable = \"true\" class=\"icon-keyframe\" style=\"left: " + (secondsToPixels(layer.outPoint) - 20) + "px\"></div>");
@@ -511,7 +559,29 @@ Commands = {
         if (frames < 1) {frames = "00";}
         var time    = hours+':'+minutes+':'+seconds+':'+frames;
         return time;
-    }
+    },
 
+    crossAppInit: function() {
+        createWebSocketConnection();
+    },
+
+    crossAppSendMessage: function(message) {
+            var success = false;
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                try {
+                    ws.send(message);
+                    success = true;
+                } catch (e) {
+                    console.error("Error sending message", e);
+                }
+            }
+            
+            if (success) {
+                console.log("sent: " + message, "sent");
+            } else {
+                console.log("failed to send: " + message, "error");
+            }
+            
+    }
 
 }

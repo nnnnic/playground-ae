@@ -335,11 +335,13 @@ input[type=color]::-webkit-color-swatch {
 }
 .info-stuff {
   position: relative;
-  left: 45px;
+  /*left: 45px;*/
   top: -25px;
   margin-left: 30px;
   height: 400px;
-
+  width: 250px!important;
+  padding: 0 0 0 40px!important;
+  margin: 0!important;
 }
 .info-item {
   color: #606060;
@@ -348,6 +350,7 @@ input[type=color]::-webkit-color-swatch {
   line-height: 18px;
   padding-bottom: 20px;
   display: inline-block;
+
 }
 .effect-item a {
   display: block;
